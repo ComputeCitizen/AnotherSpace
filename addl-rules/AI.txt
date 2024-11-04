@@ -1,4 +1,3 @@
-#AI相关
 payload:
   - 'api.statsig.com'
   - 'browser-intake-datadoghq.com'
@@ -36,21 +35,19 @@ payload:
   - '+.stripe.com'
   - '+.ai.com'
   - '+.openaicom-api.com'
-  #openai日志平台
+  #openai
   - '+.sentry.io'
 
-  #claude相关
+  #claude
   - '+.claude.ai'
   - '+.anthropic.com'
   - 'servd-anthropic-website.b-cdn.net'
 
-  #bing AI相关
+  #bing AI
   - '+.bing.com'
 
-  #Midjourney相关
+  #Midjourney
   - '+.discord.com'
   - '+.midjourney.com'
-
-  #机器验证相关
   - '+.challenges.cloudflare.com'
   - '+.recaptcha.net'
