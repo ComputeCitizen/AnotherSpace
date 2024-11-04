@@ -1,0 +1,75 @@
+name: CainiaoAdBlock
+desc: 菜鸟裹裹广告拦截脚本 感谢：https://github.com/ddgksf2013/
+icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
+category: 去广告
+date: "2024-11-04 14:00:00"
+
+http:
+  mitm:
+    - "cn-acs.m.cainiao.com"
+    - "guide-acs.m.taobao.com"
+    - "acs4miniapp-inner.m.taobao.com"
+    - "amdc.m.taobao.com"
+  rewrite:
+    #Reject actions without scripts
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn - reject-200
+    - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show - reject-200
+    - ^https?:\/\/acs4miniapp-inner\.m\.taobao\.com/gw/mtop\.alimama\.abyss\.unionpage\.get - reject-200
+    - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.adx\.flyad\.getad - reject-200
+    - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
+    
+  script:
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.app\.mine\.main\.cn
+      name: CainiaoJsonScript
+      type: response
+      require-body: true
+      timeout: 30
+
+    - match: ^http:\/\/amdc\.m\.taobao\.com
+      name: AmdcScript
+      type: response
+      #require-body: true
+      timeout: 30
+
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.homepage\.merge\.get\.cn
+      name: CainiaoJsonScript
+      type: response
+      require-body: true
+      timeout: 30
+
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.protocol\.homepage\.get\.cn
+      name: CainiaoJsonScript
+      type: response
+      require-body: true
+      timeout: 30
+
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword
+      name: CainiaoJsonScript
+      type: response
+      require-body: true
+      timeout: 30
+
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.index\.cn
+      name: CainiaoJsonScript
+      type: response
+      require-body: true
+      timeout: 30
+
+    - match: ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow
+      name: CainiaoJsonScript
+      type: response
+      require-body: true
+      timeout: 30
+
+     
+
+script-providers:
+  CainiaoJsonScript:
+    url: https://raw.githubusercontent.com/ddgksf2013/Scripts/master/cainiao_json.js
+    interval: 86400
+    type: http
+
+  AmdcScript:
+    url: https://github.com/ddgksf2013/Scripts/raw/master/amdc.js
+    interval: 86400
+    type: http
