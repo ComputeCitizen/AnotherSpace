@@ -1,0 +1,56 @@
+#AI相关
+payload:
+  - 'api.statsig.com'
+  - 'browser-intake-datadoghq.com'
+  - 'cdn.openai.com'
+  - 'chat.openai.com'
+  - 'chat.openai.com.cdn.cloudflare.net'
+  - 'ios.chat.openai.com'
+  - 'o33249.ingest.sentry.io'
+  - 'openai-api.arkoselabs.com'
+  - 'openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net'
+  - 'openaicomproductionae4b.blob.core.windows.net'
+  - 'production-openaicom-storage.azureedge.net'
+  - 'chatgpt-async-webps-prod-southeastasia-0.webpubsub.azure.com'
+  - 'static.cloudflareinsights.com'
+  - '+.algolia.net'
+  - '+.auth0.com'
+  - '+.cdn.cloudflare.net'
+  - '+.chatgpt.com'
+  - '+.client-api.arkoselabs.com'
+  - '+.events.statsigapi.net'
+  - '+.featuregates.org'
+  - '+.identrust.com'
+  - '+.intercom.io'
+  - '+.intercomcdn.com'
+  - '+.launchdarkly.com'
+  - '+.oaistatic.com'
+  - '+.oaiusercontent.com'
+  - '+.observeit.net'
+  - '+.openai.com'
+  - '+.openaiapi-site.azureedge.net'
+  - '+.openaicom.imgix.net'
+  - '+.poe.com'
+  - '+.poecdn.net'
+  - '+.segment.io'
+  - '+.stripe.com'
+  - '+.ai.com'
+  - '+.openaicom-api.com'
+  #openai日志平台
+  - '+.sentry.io'
+
+  #claude相关
+  - '+.claude.ai'
+  - '+.anthropic.com'
+  - 'servd-anthropic-website.b-cdn.net'
+
+  #bing AI相关
+  - '+.bing.com'
+
+  #Midjourney相关
+  - '+.discord.com'
+  - '+.midjourney.com'
+
+  #机器验证相关
+  - '+.challenges.cloudflare.com'
+  - '+.recaptcha.net'
