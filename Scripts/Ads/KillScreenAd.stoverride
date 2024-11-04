@@ -1,0 +1,100 @@
+name: 去开屏广告 by ComputeCitizen
+desc: 把常见APP开屏广告干沉 数据来源：https://github.com/rexinwangyou37/lajiguanggao/blob/28844bbfb90fe6dbab3194670ceff47885a8b4eb/fuxie.txt
+icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
+category: 去广告
+date: "2024-11-04 14:00:00"
+
+http:
+  mitm:
+    - "ms.jr.jd.com"
+    - "gab.122.gov.cn"
+    - "wallet.95516.com"
+    - "amdc.m.taobao.com"
+    - "flowplus.meituan.net"
+    - "s3plus.meituan.net"
+    - "img.meituan.net"
+    - "wmapi.meituan.com"
+    - "*.sf-express.com"
+    - "api.pinduoduo.com"
+    - "*.api.zhihu.com"
+    - "syh.zybang.com"
+    - "api.xiachufang.com"
+    - "api.m.mi.com"
+    - "api.jr.mi.com"
+    - "api-mifit.huami.com"
+    - "home.mi.com"
+    - "m.creditcard.ecitic.com"
+    - "wap.bank.ecitic.com"
+    - "az*mbasecc.bas.cmbchina.com"
+    - "intellicc.bas.cmbchina.com"
+    - "mbasecc.bas.cmbchina.com"
+    - "webappcfg.paas.cmbchina.com"
+    - "mage.spdbccc.com.cn"
+    - "p0.pipi.cn"
+    - "mea.meitudata.com"
+    
+  rewrite:
+    #Reject actions without scripts
+    #京东
+    - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ - reject-200
+    # 京东极速版 去广告
+    - ^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=lite_advertising - reject-200
+    # 京东金融 去广告
+    - ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/aladdin\/(new)?na\/m\/getLoadingPicture - reject-200
+    # 交管12123 去广告
+    - ^https:\/\/gab\.122\.gov\.cn\/eapp\/m\/sysquery\/adver$ - reject-200
+    # 云闪付 去广告
+    - ^https:\/\/wallet\.95516\.com\/s\/wl\/icon\/long - reject-200
+    # > 米家 #开屏广告+横幅广告
+    - ^https:\/\/home\.mi\.com\/cgi-op\/api\/v1\/recommendation\/(banner|myTab|openingBanner)\? - reject-200
+    # 美团 去广告
+    - ^https:\/\/flowplus\.meituan\.net\/v1\/mss_\w+\/linglong\/\d+\.jpg$ - reject-200
+    - ^https:\/\/s3plus\.meituan\.net\/v1\/mss_\w+\/(brandcpt-vedio|waimai-alita)\/\w+\.zip$ - reject-200
+    # > 美团外卖 #开屏广告
+    - ^https?:\/\/img\.meituan\.net\/bizad\/.*.jpg - reject-200
+    - ^https:\/\/img\.meituan\.net\/bizad\/bizad_brandCpt_\d+ - reject-200
+    - ^http:\/\/wmapi\.meituan\.com\/api\/v7\/(loadInfo|openscreen|startpicture)\?ad - reject-200
+    - ^https?:\/\/s3plus\.meituan\.net\/v1\/mss_\w+\/(brandcpt-vedio|waimai-alita)\/\w+ - reject-200
+    # 顺丰速运 去开屏
+    - ^https?:\/\/ccsp-egmas\.sf-express\.com\/cx-app-base\/base\/app\/appVersion\/detectionUpgrade - reject-200
+    - ^https?:\/\/ccsp-egmas\.sf-express\.com\/cx-app-base\/base\/app\/ad\/ - reject-200
+    - ^https?:\/\/shopic\.sf-express\.com\/crm\/mobile\/common\/flashscreen - reject-200
+    # 拼多多 去开屏
+    - ^https?:\/\/api\.(pinduoduo|yangkeduo)\.com\/api\/cappuccino\/splash - reject-200
+    # 知乎
+    - ^https?:\/\/api\.zhihu\.com\/(notifications\/v\d\/count) - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/ab\/api\/v1\/products\/zhihu\/platforms\/ios\/config - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/ad-style-service\/request - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/api\/v4\/ecom_data\/config - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/brand\/question\/\d+\/card\? - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/banners_v3\/app_topstory_banner - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/launch_v2\? - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/real_time_launch_v2\? - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/content-distribution-core\/bubble\/common\/settings - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/feed\/render\/revisit\/current_reading - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/feed\/render\/revisit\/tag_config - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/me\/guides - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/moments\/recent - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/moments\/tab_v2 - reject-200
+    # 作业帮 去广告
+    - ^https:\/\/syh\.zybang\.com\/com\/adx\/impress$ - reject-200
+    # > 大众点评 #开屏广告
+    - ^https:\/\/img\.meituan\.net\/dpmobile\/.*.(gif|jpg) - reject-200
+    - ^https:\/\/img\.meituan\.net\/dpmobile\/.+93241\.png - reject-200
+    # > 下厨房 #开屏广告
+    - ^https?:\/\/api\.xiachufang\.com\/v\d\/ad/ - reject-200
+    # > 中信银行 #开屏广告
+    - ^https?:\/\/wap.bank\.ecitic\.com:6443\/NMBFOServer\/cbframework\.do\?act=CUBEPAGEDATA - reject-200
+    - ^https:\/\/imcs\.citicbank\.com\/cloud\/.+(1125.+2436|1242.+2688|750.+1638|563.+1218) - reject-200
+    # > 招商银行 #开屏广告
+    - ^https?:\/\/webappcfg\.paas\.cmbchina\.com\/v\d\/func\/getmarketconfig - reject-200
+
+    # > 浦大喜奔#开屏广告
+    - ^https?:\/\/image\.spdbccc\.com\.cn\/group\d\/M00\/[A-Z0-9]{2}\/[A-Z0-9]{2}\/.+(4038|0571|M511|V-008|g549|b0628|fg817|5w501|Jo341) - reject-200
+    # > 浦发银行 #开屏广告
+    - ^https:\/\/(lban|wap)\.spdb\.com\.cn\/mspmk-web-(component|homeassist)\/(getAdvList|getAdvertisementList|prefetchAdvList|OpenScreenAdv) - reject-200
+    # > 猫眼 #开屏广告
+    - ^https:\/\/p0\.pipi\.cn\/adAdmin\/.+\.jpg\?imageMogr2\/quality\/85\?may_covertWebp - reject-200
+    # > 美图秀秀 #开屏广告
+    - ^https?:\/\/mea\.meitudata\.com\/kaiping - reject-200
+    
