@@ -69,15 +69,21 @@ http:
     - ^https?:\/\/api\.zhihu\.com\/ad-style-service\/request - reject-200
     - ^https?:\/\/api\.zhihu\.com\/api\/v4\/ecom_data\/config - reject-200
     - ^https?:\/\/api\.zhihu\.com\/brand\/question\/\d+\/card\? - reject-200
-    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/banners_v3\/app_topstory_banner - reject-200
-    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/launch_v2\? - reject-200
-    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/real_time_launch_v2\? - reject-200
+    #- ^https?:\/\/api\.zhihu\.com\/commercial_api\/banners_v3\/app_topstory_banner - reject-200
+    #- ^https?:\/\/api\.zhihu\.com\/commercial_api\/launch_v2\? - reject-200
+    #- ^https?:\/\/api\.zhihu\.com\/commercial_api\/real_time_launch_v2\? - reject-200
     - ^https?:\/\/api\.zhihu\.com\/content-distribution-core\/bubble\/common\/settings - reject-200
     - ^https?:\/\/api\.zhihu\.com\/feed\/render\/revisit\/current_reading - reject-200
     - ^https?:\/\/api\.zhihu\.com\/feed\/render\/revisit\/tag_config - reject-200
     - ^https?:\/\/api\.zhihu\.com\/me\/guides - reject-200
     - ^https?:\/\/api\.zhihu\.com\/moments\/recent - reject-200
     - ^https?:\/\/api\.zhihu\.com\/moments\/tab_v2 - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/ - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/fringe\/ad - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/ad - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/appview\/api\/v\d\/answers\/\d+\/recommendations - reject-200
+    - ^https?:\/\/api\.zhihu\.com\/\w+\/\d+\/comments\/featured-comment-ad - reject-200
+    - ^https?:\/\/www\.zhihu\.com\/api\/v\d\/answers/\d+/recommendations - reject-200
     # 作业帮 去广告
     - ^https:\/\/syh\.zybang\.com\/com\/adx\/impress$ - reject-200
     # 大众点评 #开屏广告
