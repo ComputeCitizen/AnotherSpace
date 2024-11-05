@@ -42,3 +42,7 @@ payload:
   - '+.pangolin-sdk-toutiao.com'
   - '+.pangolin-sdk-toutiao-b.com'
   - '+.pglstatp-toutiao.com'
+  - '+.gjfzpt.cn'
+  - '+.96110.com'
+  - '+.96110.cn'
+  - '+.fz96110.com'
