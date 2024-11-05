@@ -32,6 +32,8 @@ http:
     - "mage.spdbccc.com.cn"
     - "p0.pipi.cn"
     - "mea.meitudata.com"
+    - "huodong.weibo.cn"
+    - "*.biz.weibo.com"
     
   rewrite:
     #Reject actions without scripts
@@ -78,23 +80,29 @@ http:
     - ^https?:\/\/api\.zhihu\.com\/moments\/tab_v2 - reject-200
     # 作业帮 去广告
     - ^https:\/\/syh\.zybang\.com\/com\/adx\/impress$ - reject-200
-    # > 大众点评 #开屏广告
+    # 大众点评 #开屏广告
     - ^https:\/\/img\.meituan\.net\/dpmobile\/.*.(gif|jpg) - reject-200
     - ^https:\/\/img\.meituan\.net\/dpmobile\/.+93241\.png - reject-200
-    # > 下厨房 #开屏广告
+    # 下厨房 #开屏广告
     - ^https?:\/\/api\.xiachufang\.com\/v\d\/ad/ - reject-200
-    # > 中信银行 #开屏广告
+    # 中信银行 #开屏广告
     - ^https?:\/\/wap.bank\.ecitic\.com:6443\/NMBFOServer\/cbframework\.do\?act=CUBEPAGEDATA - reject-200
     - ^https:\/\/imcs\.citicbank\.com\/cloud\/.+(1125.+2436|1242.+2688|750.+1638|563.+1218) - reject-200
-    # > 招商银行 #开屏广告
+    # 招商银行 #开屏广告
     - ^https?:\/\/webappcfg\.paas\.cmbchina\.com\/v\d\/func\/getmarketconfig - reject-200
-
-    # > 浦大喜奔#开屏广告
+    # 浦大喜奔#开屏广告
     - ^https?:\/\/image\.spdbccc\.com\.cn\/group\d\/M00\/[A-Z0-9]{2}\/[A-Z0-9]{2}\/.+(4038|0571|M511|V-008|g549|b0628|fg817|5w501|Jo341) - reject-200
-    # > 浦发银行 #开屏广告
+    # 浦发银行 #开屏广告
     - ^https:\/\/(lban|wap)\.spdb\.com\.cn\/mspmk-web-(component|homeassist)\/(getAdvList|getAdvertisementList|prefetchAdvList|OpenScreenAdv) - reject-200
-    # > 猫眼 #开屏广告
+    # 猫眼 #开屏广告
     - ^https:\/\/p0\.pipi\.cn\/adAdmin\/.+\.jpg\?imageMogr2\/quality\/85\?may_covertWebp - reject-200
-    # > 美图秀秀 #开屏广告
+    # 美图秀秀 #开屏广告
     - ^https?:\/\/mea\.meitudata\.com\/kaiping - reject-200
-    
+    # 微博 开屏广告
+    - ^https?:\/\/huodong\.weibo\.cn\/.* - reject-200
+    - ^https?:\/\/biz\.weibo\.com\/.* - reject-200
+    - ^https?:\/\/adstrategy\.biz\.weibo\.com\/.* - reject-200
+    - ^https?:\/\/kadmimage\.biz\.weibo\.com\/.* - reject-200
+    - ^https?:\/\/sdkaction\.biz\.weibo\.com\/.* - reject-200
+    - ^https?:\/\/sdkclick\.biz\.weibo\.com\/.* - reject-200
+    - ^https?:\/\/sdkmonitor\.biz\.weibo\.com\/.* - reject-200
