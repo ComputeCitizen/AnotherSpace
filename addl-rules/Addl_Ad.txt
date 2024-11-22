@@ -48,5 +48,5 @@ payload:
   - '+.fz96110.com'
   - 'api.spstmind.com'
   - 'snowflake.qq.com'
-  - '+.ettolads.cn'
+  - '+.etoolads.cn'
 
