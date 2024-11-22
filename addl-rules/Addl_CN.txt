@@ -10,3 +10,4 @@ payload:
   - '+.xfusion.com'
   - 'client.amplifi.com'
   - '+.iffrc.com'
+  - 'www.msftconnecttest.com'
