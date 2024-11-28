@@ -40,3 +40,6 @@ payload:
   - '+.amazon.nl'
   - '+.amazon.red'
   - '+.amazon.sg'
+  - '+.siege-amazon.com'
+  - '+.media-amazon.com'
+  - '+.ssl-images-amazon.com'
