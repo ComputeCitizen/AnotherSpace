@@ -42,6 +42,8 @@ payload:
   - '+.claude.ai'
   - '+.anthropic.com'
   - 'servd-anthropic-website.b-cdn.net'
+  - 'www.claudeusercontent.com'
+  - 'cdn.usefathom.com'
 
   #bing AI
   - '+.bing.com'
