@@ -2,7 +2,7 @@ name: ComputeCitizen-干掉开屏广告们
 desc: 感谢@rexinwangyou37
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 去广告
-date: "2024-12-16 11:01:01"
+date: "2024-12-16 11:11:11"
 
 http:
   mitm:
