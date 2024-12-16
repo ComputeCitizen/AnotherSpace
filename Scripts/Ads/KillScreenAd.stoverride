@@ -112,7 +112,7 @@ http:
     - ^https?:\/\/sdkclick\.biz\.weibo\.com\/.* - reject-200
     - ^https?:\/\/sdkmonitor\.biz\.weibo\.com\/.* - reject-200
     # 网易云音乐
-    - ^https?+:\/\/.+?\/eapi\/(?>ad|log)\/ - reject-200
+    - ^https?:\/\/.+?\/eapi\/(ad|log)\/ - reject-200
     - ^https?:\/\/interface(\d)?.music.163.com\/eapi\/ad\/ - reject-200
     - ^https?:\/\/iadmusicmat\.music\.126\.net\/.+\.jpg - reject-200
     - ^http:\/\/interface\.music\.163\.com\/eapi\/ad\/config\/get - reject-200
@@ -130,13 +130,13 @@ http:
     - ^https:\/\/dss0.bdstatic.com\/-0U0bnSm1A5BphGlnYG\/ - reject-200
     - ^https:\/\/dss0\.bdstatic\.com\/.+/tam-ogel\/.+\.(jpg|mp4) - reject-200
     - ^https?:\/\/tb1.bdstatic.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject-200
-    - ^https?+:\/\/ss0\.bdstatic\.com/.+?_\d{3}_\d{4}\.jpg - reject-200
+    - ^https?:\/\/ss0\.bdstatic\.com/.+?_\d{3}_\d{4}\.jpg - reject-200
     - ^https?:\/\/gss0\.bdstatic\.com\/.+?\/static\/wiseindex\/img\/bd_red_packet\.png - reject-img
     - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
     # 中国移动
-    - ^https?+:\/\/gd\.10086\.cn\/gmccfile\/file\/image\/preloading703\/.*.jpg - reject-200
-    - ^https?+:\/\/clientaccess\.10086\.cn\/biz-orange\/DN\/init\/startInit - reject-200
-    - ^https?+:\/\/wap\.js\.10086\.cn\/jsmccClient\/cd\/market_content\/api\/v\d\/market_content\.page\.query - reject-200
+    - ^https?:\/\/gd\.10086\.cn\/gmccfile\/file\/image\/preloading703\/.*.jpg - reject-200
+    - ^https?:\/\/clientaccess\.10086\.cn\/biz-orange\/DN\/init\/startInit - reject-200
+    - ^https?:\/\/wap\.js\.10086\.cn\/jsmccClient\/cd\/market_content\/api\/v\d\/market_content\.page\.query - reject-200
     - ^https?:\/\/app\.10086\.cn\/biz-orange\/DN\/(findSale|homeSale)\/getsaleAdver - reject-200
     # 中国联通
     - ^https?:\/\/m\.client\.10010\.com\/uniAdmsInterface\/getWelcomeAd - reject-200
@@ -158,7 +158,7 @@ http:
     - ^https?:\/\/img\d\.doubanio\.com\/view\/dale-online\/dale_ad\/ - reject-200
     - ^https?:\/\/frodo.douban.com\/api\/v2\/movie\/banner - reject-200
     - ^https?:\/\/erebor\.douban\.com\/count\/\?ad= - reject-200
-    - ^https?+:\/\/api\.douban\.com\/v\d\/app_ads\/ - reject-200
+    - ^https?:\/\/api\.douban\.com\/v\d\/app_ads\/ - reject-200
     # 腾讯新闻
     - ^https?:\/\/r\.inews\.qq\.com\/(adsBlacklist|getFullScreenPic|getQQNewsRemoteConfig) - reject-200
     - ^https?:\/\/r\.inews\.qq\.com\/getBannerAds - reject-img
@@ -180,11 +180,11 @@ http:
     - ^https?:\/\/lives\.l\.qq\.com\/livemsg\?sdtfrom= - reject-img
     - ^https?:\/\/imgcache\.qq\.com\/qqlive\/ - reject-img
     - ^https?:\/\/mtteve\.beacon\.qq\.com\/analytics - reject-img
-    - ^https?+:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
-    - ^https?+:\/\/ssl\.kohsocialapp\.qq\.com:10001\/game\/buttons - reject-200
-    - ^https?+:\/\/qt\.qq\.com\/lua\/mengyou\/get_splash_screen_info - reject-200
-    - ^https?+:\/\/3gimg\.qq\.com\/tencentMapTouch\/app\/activity\/ - reject-200
-    - ^https?+:\/\/3gimg\.qq\.com\/tencentMapTouch\/splash\/ - reject-200
+    - ^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
+    - ^https?:\/\/ssl\.kohsocialapp\.qq\.com:10001\/game\/buttons - reject-200
+    - ^https?:\/\/qt\.qq\.com\/lua\/mengyou\/get_splash_screen_info - reject-200
+    - ^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/app\/activity\/ - reject-200
+    - ^https?:\/\/3gimg\.qq\.com\/tencentMapTouch\/splash\/ - reject-200
     - ^https?:\/\/.+?\.l\.qq\.com - reject-200
     - ^https?:\/\/\w+\.gdt\.qq\.com - reject-200
     - ^https?:\/\/y\.gtimg\.cn\/music\/.*?_Ad/\d+\.png - reject-img
@@ -199,9 +199,9 @@ http:
     - ^https?:\/\/intl\.iqiyi\.com\/ad_external\/ - reject-200
     - ^https?:\/\/intl\.iqiyi\.com\/video\/advertise - reject-200
     - ^https?:\/\/u\d\.iqiyipic\.com\/image\/[\w\/]+\/oad_ - reject-200
-    - ^https?+:\/\/act\.vip\.iqiyi\.com\/interact\/api\/show\.do - reject-200
-    - ^https?+:\/\/act\.vip\.iqiyi\.com\/interact\/api\/v2\/show - reject-200
-    - ^https?+:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo - reject-200
+    - ^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/show\.do - reject-200
+    - ^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/v2\/show - reject-200
+    - ^https?:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo - reject-200
     - ^https?:\/\/iface2\.iqiyi\.com\/fusion\/3\.0\/fusion_switch - reject-img
     - ^http:\/\/.+\.iqiyipic\.com\/image\/.+\/ad\/.+\.jpg - reject-200
     - ^http:\/\/static-s\.iqiyi\.com\/common\/.+\/Small_video\/a2\/af\/.+\.png - reject-200
