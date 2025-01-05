@@ -50,4 +50,5 @@ payload:
   - 'snowflake.qq.com'
   - '+.etoolads.cn'
   - '+.hgdggmao.cn'
+  - 'rytaazospr.japaneast.cloudapp.azure.com'
 
