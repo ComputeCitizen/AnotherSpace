@@ -49,4 +49,5 @@ payload:
   - '+.spstmind.com'
   - 'snowflake.qq.com'
   - '+.etoolads.cn'
+	- '+.hgdggmao.cn'
 
