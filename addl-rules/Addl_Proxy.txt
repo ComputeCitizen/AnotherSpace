@@ -25,3 +25,4 @@ payload:
   - '+.synology.com'
   - '+.synology.me'
   - '+.ts.net'
+  - '+.podcasts.apple.com'
