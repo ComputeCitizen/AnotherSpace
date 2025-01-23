@@ -8,6 +8,6 @@ payload:
   - '+.liftguard.top'
   - '+.unispc.com'
   - '+.xfusion.com'
-  - 'client.amplifi.com'
+  #- 'client.amplifi.com'
   - '+.iffrc.com'
   - '+.msftconnecttest.com'
