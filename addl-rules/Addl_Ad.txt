@@ -37,7 +37,7 @@ payload:
   - '+.gdt.qq.com'
   - '+.volces.com'
   - '+.native-ave1.com'
-  - '+.zijieapi.com'
+  # - '+.zijieapi.com'
   - '+.pangolin-sdk-toutiao1.com'
   - '+.pangolin-sdk-toutiao.com'
   - '+.pangolin-sdk-toutiao-b.com'
