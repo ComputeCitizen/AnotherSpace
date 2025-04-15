@@ -11,3 +11,4 @@ payload:
   #- 'client.amplifi.com'
   - '+.iffrc.com'
   - '+.msftconnecttest.com'
+  - '+.cyjysoft.com'
