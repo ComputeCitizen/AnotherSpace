@@ -12,3 +12,4 @@ payload:
   - '+.iffrc.com'
   - '+.msftconnecttest.com'
   - '+.cyjysoft.com'
+  - '+.longhuli.com'
