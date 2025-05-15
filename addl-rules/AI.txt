@@ -77,3 +77,8 @@ payload:
   - '+.midjourney.com'
   - '+.challenges.cloudflare.com'
   - '+.recaptcha.net'
+  #Apple AI
+  - '+.apple-relay.cloudflare.com'
+  - '+.apple-relay.apple.com'
+
+
