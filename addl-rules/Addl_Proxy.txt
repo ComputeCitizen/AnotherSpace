@@ -26,5 +26,5 @@ payload:
   - '+.synology.me'
   - '+.ts.net'
   - '+.podcasts.apple.com'
-  - '+.apmlifi.com'
+  #- '+.apmlifi.com'
   - '+.immersivetranslate.com'
