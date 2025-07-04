@@ -13,3 +13,4 @@ payload:
   - '+.msftconnecttest.com'
   - '+.cyjysoft.com'
   - '+.longhuli.com'
+  - '+.apmlifi.com'
