@@ -2,10 +2,11 @@ name: ComputeCitizen-干掉开屏广告们
 desc: 感谢@rexinwangyou37
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 去广告
-date: "2024-12-16 11:11:11"
+date: "2025-09-22 10:50:00"
 
 http:
   mitm:
+    # 你原有
     - "ms.jr.jd.com"
     - "gab.122.gov.cn"
     - "wallet.95516.com"
@@ -38,7 +39,62 @@ http:
     - "cloud.189.cn"
     - "zt-app.go189.cn"
 
+    # 补充：与本清单强相关的新增主机
+    - "api.weibo.com"                 # 拦截 oauth2/getaid
+    - "acs.m.taobao.com"
+    - "guide-acs.m.taobao.com"
+    - "gw.alicdn.com"
+    - "heic.alicdn.com"
+    - "m.client.10010.com"
+    - "mclient.10010.com"
+    - "client.app.coc.10086.cn"
+    - "mcmm.caiyun.feixin.10086.cn"
+    - "middle.yun.139.com"
+    - "newclient.map.baidu.com"
+    - "cards.iqiyi.com"
+    - "iface2.iqiyi.com"
+    - "t7z.cupid.iqiyi.com"
+    - "vv.video.qq.com"
+    - "btrace.qq.com"
+    - "video.dispatch.tc.qq.com"
+
   rewrite:
+    # ================= 新增（合并补漏） =================
+    # 京东：减少信息流运营位
+    - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(searchBoxWord|stationPullService|uniformRecommend) - reject-dict
+    # 京东广告平台兜底
+    - ^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ - reject
+    # 淘宝/天猫：常见广告接口
+    - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alibaba\.advertisementservice\.getadv - reject-200
+    - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.film\.mtopadvertiseapi\.queryadvertise - reject-200
+    - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.o2o\.ad\.gateway\.get - reject-200
+    - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.trip\.activity\.querytmsresources - reject-200
+    - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.taobao\.idle\.home\.welcome - reject-200
+    # 阿里静态大图（开屏素材）
+    - ^https:\/\/(gw|heic)\.alicdn\.com\/imgextra\/i\d\/.+-(octopus|tps-(702-758|1125-1602))\.(heic|jpg|png).*$ - reject-dict
+    # 美团补充兜底
+    - ^https?:\/\/p\d\.meituan\.net\/(bizad|wmbanner)\/\w+\.jpg - reject-200
+    # 微博：设备标识接口
+    - ^https?:\/\/api\.weibo\.com\/oauth2\/getaid - reject-200
+    # 知乎：开屏兜底
+    - ^https?:\/\/api\.zhihu\.com\/commercial_api\/launch_v2\? - reject-dict
+    # 中国联通：开屏与远程配置
+    - ^https?:\/\/m\.client\.10010\.com\/(uniAdmsInterface\/(getHomePageAd|getWelcomeAd)|mobileService\/(activity|customer)\/(accountListData|get_client_adv|get_startadv)) - reject
+    # 中国移动：开屏与云盘广告
+    - ^https?:\/\/mcmm\.caiyun\.feixin\.10086\.cn:80\/mcmm\/api\/(IAdvert|v\d\/getAdverts) - reject-200
+    - ^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/(emotionMarket|explorePage\/getAdverList|init\/startInit) - reject
+    # 百度地图：广告接口
+    - ^https?:\/\/newclient\.map\.baidu\.com\/client\/phpui2\/\?qt=ads - reject-dict
+    # 爱奇艺：常见广告/控制接口
+    - ^https?:\/\/cards\.iqiyi\.com\/(views_home\/3\.0\/qy_home|waterfall\/3\.0\/feed|views_search\/3\.0\/(hot_query_)?search|views_plt\/3\.0\/player_tabs_v2)\? - reject-dict
+    - ^https?:\/\/iface2\.iqiyi\.com\/(aggregate\/3\.0\/getMyMenus|fusion\/3\.0\/common_switch|views\/3\.0\/(bottom_theme|home_top_menu)|control\/3\.0\/init_proxy)\? - reject-dict
+    - ^https?:\/\/t7z\.cupid\.iqiyi\.com\/mixer\? - reject-dict
+    # 腾讯视频：统计与开屏
+    - ^https?:\/\/btrace\.qq\.com - reject-200
+    - ^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
+    - ^https?:\/\/video\.dispatch\.tc\.qq\.com\/\w+\.p20\d\.1\.mp4 - reject-200
+
+    # ================= 你原有的完整规则（未删减） =================
     #Reject actions without scripts
     #京东
     - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ - reject-200
