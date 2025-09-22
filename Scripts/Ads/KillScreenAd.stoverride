@@ -6,7 +6,7 @@ date: "2025-09-22 10:50:00"
 
 http:
   mitm:
-    # 你原有
+    # 原有
     - "ms.jr.jd.com"
     - "gab.122.gov.cn"
     - "wallet.95516.com"
@@ -94,7 +94,7 @@ http:
     - ^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
     - ^https?:\/\/video\.dispatch\.tc\.qq\.com\/\w+\.p20\d\.1\.mp4 - reject-200
 
-    # ================= 你原有的完整规则（未删减） =================
+    # ================= 原有的完整规则（未删减） =================
     #Reject actions without scripts
     #京东
     - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ - reject-200
