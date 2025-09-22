@@ -6,7 +6,7 @@ date: "2025-09-22 12:05:00"
 
 http:
   mitm:
-    # 你原有
+    # 原有
     - "ms.jr.jd.com"
     - "gab.122.gov.cn"
     - "wallet.95516.com"
@@ -66,7 +66,7 @@ http:
     - "video.dispatch.tc.qq.com"
 
   rewrite:
-    # ================= 京东系（合并你的补充） =================
+    # ================= 京东系（合并补充） =================
     # 京东图片位（常见开屏/运营大图）
     - ^https?:\/\/m\.360buyimg\.com\/mobilecms\/s1125x2436_jfs - reject-200
     # 京东 Material 广告下发
@@ -120,7 +120,7 @@ http:
     - ^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
     - ^https?:\/\/video\.dispatch\.tc\.qq\.com\/\w+\.p20\d\.1\.mp4 - reject-200
 
-    # ================= 你原有的完整规则（继续保留，不改动） =================
+    # ================= 原有的完整规则（继续保留，不改动） =================
     #Reject actions without scripts
     #京东
     - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ - reject-200
