@@ -1,12 +1,12 @@
 name: ComputeCitizen-干掉开屏广告们
-desc: 感谢@rexinwangyou37
+desc: 感谢@rexinwangyou37 ｜ 合并补漏：京东系若干入口
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 去广告
-date: "2025-09-22 10:50:00"
+date: "2025-09-22 12:05:00"
 
 http:
   mitm:
-    # 原有
+    # 你原有
     - "ms.jr.jd.com"
     - "gab.122.gov.cn"
     - "wallet.95516.com"
@@ -39,14 +39,21 @@ http:
     - "cloud.189.cn"
     - "zt-app.go189.cn"
 
-    # 补充：与本清单强相关的新增主机
-    - "api.weibo.com"                 # 拦截 oauth2/getaid
+    # 新增（为京东系补漏，HTTPS 解密必需）
+    - "api.m.jd.com"
+    - "m.360buyimg.com"
+    - "jdread-api.jd.com"
+    - "router-app-api.jdcloud.com"
+    - "bdsp-x.jd.com"
+    - "dsp-x.jd.com"
+
+    # 其它与本清单强相关（上版已加，这里保留）
+    - "api.weibo.com"
     - "acs.m.taobao.com"
     - "guide-acs.m.taobao.com"
     - "gw.alicdn.com"
     - "heic.alicdn.com"
     - "m.client.10010.com"
-    - "mclient.10010.com"
     - "client.app.coc.10086.cn"
     - "mcmm.caiyun.feixin.10086.cn"
     - "middle.yun.139.com"
@@ -59,18 +66,37 @@ http:
     - "video.dispatch.tc.qq.com"
 
   rewrite:
-    # ================= 新增（合并补漏） =================
-    # 京东：减少信息流运营位
-    - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(searchBoxWord|stationPullService|uniformRecommend) - reject-dict
-    # 京东广告平台兜底
+    # ================= 京东系（合并你的补充） =================
+    # 京东图片位（常见开屏/运营大图）
+    - ^https?:\/\/m\.360buyimg\.com\/mobilecms\/s1125x2436_jfs - reject-200
+    # 京东 Material 广告下发
+    - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject-dict
+    # 搜索框热词 / 站点推荐 / 统一推荐（上版已加，保留）
+    - ^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=(searchBoxWord|stationPullService|uniformRecommend) - reject-dict
+    # 京东 ADX
     - ^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ - reject
+    # 京东极速版（原规则是 Loon/QX 的 “url response-body”，在 Clash/Loon YAML 重写段不可用）
+    # 等价兜底：直接拦截数据返回空，避免注入入口
+    - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=lite_advertising - reject-dict   # 原：替换 jdLiteAdvertisingVO
+    - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=lite_SmartPush - reject-dict      # 原：替换 pushData
+    # 京东健康开屏图
+    - ^https?:\/\/m\.360buyimg\.com\/babel\/jfs\/t1\/[0-9]{6}\/[0-9]{2}\/[0-9]{5}\/[0-9]{6}\/.*\.jpg - reject-200
+    - ^https?:\/\/m\.360buyimg\.com\/babel\/jfs\/t1\/180291\/5\/23800\/294871\/625f5da2E13ac0ba3\/230238c767c61b6d\.jpg - reject
+    # 京东金融开屏
+    - ^https?:\/\/ms\.jr\.jd\.com\/gw\/generic\/aladdin\/(new)?na\/m\/getLoadingPicture - reject-200
+    # 京东读书开屏/弹窗
+    - ^https?:\/\/jdread-api\.jd\.com\/jdread\/api\/channel\/module\/opens - reject-200
+    - ^https?:\/\/jdread-api\.jd\.com\/jdread\/api\/popup - reject-200
+    # 京东云无线宝开屏
+    - ^https?:\/\/router-app-api\.jdcloud\.com\/v\d\/board\/routerAppSplash - reject-200
+
+    # ================= 其余新增（上版已合并，保留） =================
     # 淘宝/天猫：常见广告接口
     - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.alibaba\.advertisementservice\.getadv - reject-200
     - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.film\.mtopadvertiseapi\.queryadvertise - reject-200
     - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.o2o\.ad\.gateway\.get - reject-200
     - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.trip\.activity\.querytmsresources - reject-200
     - ^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.taobao\.idle\.home\.welcome - reject-200
-    # 阿里静态大图（开屏素材）
     - ^https:\/\/(gw|heic)\.alicdn\.com\/imgextra\/i\d\/.+-(octopus|tps-(702-758|1125-1602))\.(heic|jpg|png).*$ - reject-dict
     # 美团补充兜底
     - ^https?:\/\/p\d\.meituan\.net\/(bizad|wmbanner)\/\w+\.jpg - reject-200
@@ -78,23 +104,23 @@ http:
     - ^https?:\/\/api\.weibo\.com\/oauth2\/getaid - reject-200
     # 知乎：开屏兜底
     - ^https?:\/\/api\.zhihu\.com\/commercial_api\/launch_v2\? - reject-dict
-    # 中国联通：开屏与远程配置
+    # 中国联通
     - ^https?:\/\/m\.client\.10010\.com\/(uniAdmsInterface\/(getHomePageAd|getWelcomeAd)|mobileService\/(activity|customer)\/(accountListData|get_client_adv|get_startadv)) - reject
-    # 中国移动：开屏与云盘广告
+    # 中国移动云盘/客户端
     - ^https?:\/\/mcmm\.caiyun\.feixin\.10086\.cn:80\/mcmm\/api\/(IAdvert|v\d\/getAdverts) - reject-200
     - ^https?:\/\/client\.app\.coc\.10086\.cn\/biz-orange\/DN\/(emotionMarket|explorePage\/getAdverList|init\/startInit) - reject
-    # 百度地图：广告接口
+    # 百度地图
     - ^https?:\/\/newclient\.map\.baidu\.com\/client\/phpui2\/\?qt=ads - reject-dict
-    # 爱奇艺：常见广告/控制接口
+    # 爱奇艺
     - ^https?:\/\/cards\.iqiyi\.com\/(views_home\/3\.0\/qy_home|waterfall\/3\.0\/feed|views_search\/3\.0\/(hot_query_)?search|views_plt\/3\.0\/player_tabs_v2)\? - reject-dict
     - ^https?:\/\/iface2\.iqiyi\.com\/(aggregate\/3\.0\/getMyMenus|fusion\/3\.0\/common_switch|views\/3\.0\/(bottom_theme|home_top_menu)|control\/3\.0\/init_proxy)\? - reject-dict
     - ^https?:\/\/t7z\.cupid\.iqiyi\.com\/mixer\? - reject-dict
-    # 腾讯视频：统计与开屏
+    # 腾讯视频
     - ^https?:\/\/btrace\.qq\.com - reject-200
     - ^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
     - ^https?:\/\/video\.dispatch\.tc\.qq\.com\/\w+\.p20\d\.1\.mp4 - reject-200
 
-    # ================= 原有的完整规则（未删减） =================
+    # ================= 你原有的完整规则（继续保留，不改动） =================
     #Reject actions without scripts
     #京东
     - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start$ - reject-200
@@ -112,7 +138,7 @@ http:
     - ^https:\/\/flowplus\.meituan\.net\/v1\/mss_\w+\/linglong\/\d+\.jpg$ - reject-200
     - ^https:\/\/s3plus\.meituan\.net\/v1\/mss_\w+\/(brandcpt-vedio|waimai-alita)\/\w+\.zip$ - reject-200
     # > 美团外卖 #开屏广告
-    - ^https?:\/\/img\.meituan\.net\/bizad\/.*.jpg - reject-200
+    - ^https?:\/\/img\.meituan\.net\/bizad\/.*\.jpg - reject-200
     - ^https:\/\/img\.meituan\.net\/bizad\/bizad_brandCpt_\d+ - reject-200
     - ^http:\/\/wmapi\.meituan\.com\/api\/v7\/(loadInfo|openscreen|startpicture)\?ad - reject-200
     #- ^https?:\/\/s3plus\.meituan\.net\/v1\/mss_\w+\/(brandcpt-vedio|waimai-alita)\/\w+ - reject-200
@@ -145,7 +171,7 @@ http:
     # 作业帮 去广告
     - ^https:\/\/syh\.zybang\.com\/com\/adx\/impress$ - reject-200
     # 大众点评 #开屏广告
-    - ^https:\/\/img\.meituan\.net\/dpmobile\/.*.(gif|jpg) - reject-200
+    - ^https:\/\/img\.meituan\.net\/dpmobile\/.*\.(gif|jpg) - reject-200
     - ^https:\/\/img\.meituan\.net\/dpmobile\/.+93241\.png - reject-200
     # 下厨房 #开屏广告
     - ^https?:\/\/api\.xiachufang\.com\/v\d\/ad/ - reject-200
@@ -171,7 +197,7 @@ http:
     - ^https?:\/\/sdkmonitor\.biz\.weibo\.com\/.* - reject-200
     # 网易云音乐
     - ^https?:\/\/.+?\/eapi\/(ad|log)\/ - reject-200
-    - ^https?:\/\/interface(\d)?.music.163.com\/eapi\/ad\/ - reject-200
+    - ^https?:\/\/interface(\d)?\.music\.163\.com\/eapi\/ad\/ - reject-200
     - ^https?:\/\/iadmusicmat\.music\.126\.net\/.+\.jpg - reject-200
     - ^http:\/\/interface\.music\.163\.com\/eapi\/ad\/config\/get - reject-200
     - ^https?:\/\/m\.ads\.8le8le\.com\/adShow - reject-200
@@ -184,15 +210,15 @@ http:
     - ^https?:\/\/aweme\.snssdk\.com\/aweme\/v1\/device\/update\/ - reject-img
     - ^https?:\/\/aweme\.snssdk\.com\/aweme\/v1\/screen\/ad\/ - reject-img
     - ^https?:\/\/aweme\.snssdk\.com\/service\/2\/app_log - reject-img
-    # 百度地图
+    # 百度地图 静态资源兜底
     - ^https:\/\/dss0.bdstatic.com\/-0U0bnSm1A5BphGlnYG\/ - reject-200
     - ^https:\/\/dss0\.bdstatic\.com\/.+/tam-ogel\/.+\.(jpg|mp4) - reject-200
-    - ^https?:\/\/tb1.bdstatic.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject-200
+    - ^https?:\/\/tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject-200
     - ^https?:\/\/ss0\.bdstatic\.com/.+?_\d{3}_\d{4}\.jpg - reject-200
     - ^https?:\/\/gss0\.bdstatic\.com\/.+?\/static\/wiseindex\/img\/bd_red_packet\.png - reject-img
     - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
     # 中国移动
-    - ^https?:\/\/gd\.10086\.cn\/gmccfile\/file\/image\/preloading703\/.*.jpg - reject-200
+    - ^https?:\/\/gd\.10086\.cn\/gmccfile\/file\/image\/preloading703\/.*\.jpg - reject-200
     - ^https?:\/\/clientaccess\.10086\.cn\/biz-orange\/DN\/init\/startInit - reject-200
     - ^https?:\/\/wap\.js\.10086\.cn\/jsmccClient\/cd\/market_content\/api\/v\d\/market_content\.page\.query - reject-200
     - ^https?:\/\/app\.10086\.cn\/biz-orange\/DN\/(findSale|homeSale)\/getsaleAdver - reject-200
@@ -253,28 +279,25 @@ http:
     - ^https?:\/\/bla\.gtimg\.com\/qqlive\/\d{6}.+?\.png - reject-img
     - ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qiantu\/upload\/ - reject-img
     - ^https?:\/\/mmgr\.gtimg\.com\/gjsmall\/qqpim\/public\/ios\/splash\/.+?\/\d{4}_\d{4} - reject-img
-    # 爱奇艺
+    # 爱奇艺（其它）
     - ^https?:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo - reject-200
     - ^https?:\/\/intl\.iqiyi\.com\/ad_external\/ - reject-200
     - ^https?:\/\/intl\.iqiyi\.com\/video\/advertise - reject-200
     - ^https?:\/\/u\d\.iqiyipic\.com\/image\/[\w\/]+\/oad_ - reject-200
     - ^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/show\.do - reject-200
     - ^https?:\/\/act\.vip\.iqiyi\.com\/interact\/api\/v2\/show - reject-200
-    - ^https?:\/\/iface\.iqiyi\.com\/api\/getNewAdInfo - reject-200
     - ^https?:\/\/iface2\.iqiyi\.com\/fusion\/3\.0\/fusion_switch - reject-img
     - ^http:\/\/.+\.iqiyipic\.com\/image\/.+\/ad\/.+\.jpg - reject-200
     - ^http:\/\/static-s\.iqiyi\.com\/common\/.+\/Small_video\/a2\/af\/.+\.png - reject-200
-    - ^http:\/\/msga/.cupid/.iqiyi/.com\/scp2\.gif - reject-200
+    - ^http:\/\/msga\/\.cupid\/\.iqiyi\/\.com\/scp2\.gif - reject-200
     - ^https?:\/\/ssports\.iqiyi\.com\/app\/ - reject-200
-    - ^https?:\/\/ssports\.iqiyi\.com\/json\/shop\/shopInfo  - reject-200
+    - ^https?:\/\/ssports\.iqiyi\.com\/json\/shop\/shopInfo - reject-200
     - ^https?:\/\/.+\.iqiyi\.com\/videos\/other\/20$ - reject-200
     - ^https?:\/\/.+\.iqiyipic\.com\/image\/20*_100000 - reject-200
     - ^https?:\/\/static\.iqiyi\.com\/js\/common\/.+\.js - reject-200
     - ^https?:\/\/t7z\.cupid\.iqiyi\.com\/show - reject-200
-    # 腾讯视频
+    # 腾讯视频（其它）
     - ^https://news.l.qq.com\/app\? - reject-200
-    - ^https?:\/\/btrace.qq.com - reject-200
-    - ^https?:\/\/vv\.video\.qq\.com\/getvmind\? - reject-200
     - ^http:\/\/.+\/\?tk= - reject-200
     - ^http:\/\/video\.dispatch\.tc\.qq\.com\/.+\.mp4 - reject-200
     - ^http:\/\/.+\/vmind\.qqvideo\.tc\.qq\.com\/.+\.mp4 - reject-200
