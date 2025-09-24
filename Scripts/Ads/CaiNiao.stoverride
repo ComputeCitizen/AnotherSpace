@@ -1,8 +1,8 @@
 name: ComputeCitizen-菜鸟裹裹广告拦截
-desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang
+desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼开屏拦截
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
 category: 去广告
-date: "2025-09-24 16:00:00"
+date: "2025-09-24 16:20:00"
 
 http:
   mitm:
@@ -14,6 +14,9 @@ http:
     # 新增：小程序 & 埋点域
     - "guide-acs4miniapp-inner.m.taobao.com"
     - "mdap.alipay.com"
+    # 新增：咸鱼 Goofish（开屏相关）
+    - "acs.m.goofish.com"
+    - "g-acs.m.goofish.com"
 
   rewrite:
     # ================== 直接拒绝（不走脚本） ==================
@@ -27,7 +30,7 @@ http:
     # 新增：批量/索引广告 —— 期望 JSON，改用 reject-dict 更稳
     - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-dict
 
-    # 新增：广告关键词拉取 —— 期望 JSON，改用 reject-dict；下方仍有脚本兜底
+    # 新增：广告关键词拉取 —— 期望 JSON，reject-dict；下方仍有脚本兜底
     - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword\.get\.cn - reject-dict
 
     # 新增：小程序推荐CPC/社区站点/活动页/信用市场/资源页等营销 —— 期望 JSON，reject-dict
@@ -40,14 +43,20 @@ http:
     # 新增：问卷/调研其它动作 —— 期望 JSON，reject-dict（保留 consultmerge 的硬拒绝以快速挡弹窗）
     - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-dict
 
-    # 新增：Tab 栏营销 —— 这种返回 JSON，改 reject-dict；首页结构仍交脚本
+    # 新增：Tab 栏营销 —— 返回 JSON，reject-dict；首页结构继续交脚本
     - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.tabbar\.marketing\.get\.cn - reject-dict
 
-    # 新增：支付宝埋点日志（可能证书 Pinning，不命中属正常）
+    # 新增：支付宝埋点日志（可能 Pinning，不命中属正常）
     - ^https?:\/\/mdap\.alipay\.com\/loggw\/dwcookieLogGet\.do - reject-200
 
     # 新增：小程序内另一路广告拉取（与上方 guide-acs 域对齐）
     - ^https?:\/\/guide-acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
+
+    # ================== 咸鱼（Goofish）开屏专治 ==================
+    # 开屏广告：splash.ads —— 期望 JSON，统一空 JSON，避免 UI 异常
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop.*splash\.ads - reject-dict
+    # 曝光/打点：可直接 200 空体
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.ad\.expose - reject-200
 
   script:
     # ================== 脚本精修（保持原来的逻辑） ==================
