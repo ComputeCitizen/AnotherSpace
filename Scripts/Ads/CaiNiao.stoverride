@@ -6,105 +6,108 @@ date: "2025-09-22 09:00:00"
 
 http:
   mitm:
-    # 原有的
+    # 原有
     - "cn-acs.m.cainiao.com"
     - "guide-acs.m.taobao.com"
     - "acs4miniapp-inner.m.taobao.com"
     - "amdc.m.taobao.com"
-    # 新增（来自 PixivCat / ChangXiaoqiang），便于命中更多小程序与埋点域名
+    # 新增：小程序 & 埋点域
     - "guide-acs4miniapp-inner.m.taobao.com"
-    - "mdap.alipay.com"         
+    - "mdap.alipay.com"
 
   rewrite:
-    # ====== 直接拒绝类（不走脚本），保持 reject-200 风格 ======
-
-    # 原有：广告展示直连拒绝（Cainiao/Guoguo）
+    # ================== 直接拒绝（不走脚本） ==================
+    # —— 与之前可用版本一致的“广告直出型”接口 —— 
     - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn - reject-200
     - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show - reject-200
     - ^https?:\/\/acs4miniapp-inner\.m\.taobao\.com/gw/mtop\.alimama\.abyss\.unionpage\.get - reject-200
     - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.adx\.flyad\.getad - reject-200
     - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
 
-    # 新增（来自 ChangXiaoqiang）：广告批量&索引接口，补齐漏网广告
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-200
+    # 新增：批量/索引广告 —— 期望 JSON，改用 reject-dict 更稳
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-dict
 
-    # 新增（来自 ChangXiaoqiang）：广告关键词拉取（避免后续个性化下发）
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword\.get\.cn - reject-200
+    # 新增：广告关键词拉取 —— 期望 JSON，改用 reject-dict；下方仍有脚本兜底
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword\.get\.cn - reject-dict
 
-    # 新增（来自 ChangXiaoqiang）：小程序推荐CPC、社区站点、活动/信用/资源页等营销接口
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbopen\.miniapp\.recommend\.cpc\.cn - reject-200      
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn - reject-200         
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.cnactivitycenter - reject-200                 
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.cncreditmarket\.hit\.getactivityhit\.cn - reject-200   
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-200
+    # 新增：小程序推荐CPC/社区站点/活动页/信用市场/资源页等营销 —— 期望 JSON，reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbopen\.miniapp\.recommend\.cpc\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.cnactivitycenter - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.cncreditmarket\.hit\.getactivityhit\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-dict
 
-    # 新增（来自 ChangXiaoqiang）：问卷/调研其余动作事件；已有 consultmerge，这里补齐 acquire/event/close
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-200
+    # 新增：问卷/调研其它动作 —— 期望 JSON，reject-dict（保留 consultmerge 的硬拒绝以快速挡弹窗）
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-dict
 
-    # 新增（来自 ChangXiaoqiang）：Tab 栏营销（此项走拒绝，避免与首页脚本处理冲突）
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.tabbar\.marketing\.get\.cn - reject-200
+    # 新增：Tab 栏营销 —— 这种返回 JSON，改 reject-dict；首页结构仍交脚本
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.tabbar\.marketing\.get\.cn - reject-dict
 
-    # 新增（来自 PixivCat）：支付宝埋点日志（cookie 日志上报）
+    # 新增：支付宝埋点日志（可能证书 Pinning，不命中属正常）
     - ^https?:\/\/mdap\.alipay\.com\/loggw\/dwcookieLogGet\.do - reject-200
 
-    # 说明：以下两条为 PixivCat 配置中关于广告拉取的另一接入域（guide-acs4miniapp-inner）
-    # 由于已在 guide-acs.m.taobao.com/ acs4miniapp-inner.m.taobao.com 做了覆盖，这里再补“guide-acs4miniapp-inner”域以防漏
+    # 新增：小程序内另一路广告拉取（与上方 guide-acs 域对齐）
     - ^https?:\/\/guide-acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
 
   script:
-    # ====== 走脚本精修 JSON 的接口（保持原本逻辑） ======
+    # ================== 脚本精修（保持原来的逻辑） ==================
 
-    # 原有
+    # 个人页「我的」
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.app\.mine\.main\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
+    # AMDC 分流（HTTP，无需证书，仍保留）
     - match: ^http:\/\/amdc\.m\.taobao\.com
       name: AmdcScript
       type: response
-      #require-body: true
       timeout: 30
 
+    # 首页合并（交脚本去除营销位/活动块，避免硬拒引发布局异常）
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.homepage\.merge\.get\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
+    # 协议主页（保留脚本）
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.protocol\.homepage\.get\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
+    # 关键词（保留脚本兜底：即使上面 reject-dict 失手/变更也能清理）
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
+    # 广告索引（脚本兜底）
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.index\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
+    # mshow（脚本兜底；直出已硬拒，部分老版本/灰度可由脚本处理）
     - match: ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
-    # 新增（来自 ChangXiaoqiang）：首页空页面/取件协议主页接口也交给 JSON 精修（避免一刀切）
+    # 新增：空页面/协议主页（ChangXiaoqiang）
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.(pickup\.empty\.page|protocol\.homepage)\.get\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
-    # 新增（来自 ChangXiaoqiang）：消息中心会话列表（去营销气泡/角标等）
+    # 新增：消息中心会话列表（清理营销角标/气泡）
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.nbfriend\.message\.conversation\.list\.cn
       name: CainiaoJsonScript
       type: response
@@ -121,20 +124,3 @@ script-providers:
     url: https://github.com/ddgksf2013/Scripts/raw/master/amdc.js
     interval: 86400
     type: http
-
-# ====== 可选增强（默认注释掉）：来自 PixivCat 的通用拦截域，可能影响优酷/神马等埋点或播放 ======
-# 如只针对菜鸟裹裹，可保持注释；若在淘宝内嵌优酷等频繁插入广告，可按需开启。
-# 可按需改为 RULE-SET 形式维护。
-# optional_rules:
-#   - DOMAIN, adsmind.ugdtimg.com, REJECT
-#   - DOMAIN, amdc.m.youku.com, REJECT
-#   - DOMAIN, apiv4-iyes.youku.com, REJECT
-#   - DOMAIN, httpdns.alicdn.com, REJECT
-#   - DOMAIN, huichuan-mc.sm.cn, REJECT
-#   - DOMAIN, huichuan.sm.cn, REJECT
-#   - DOMAIN, iyes.youku.com, REJECT
-#   - DOMAIN, mc.atm.youku.com, REJECT
-#   - DOMAIN, vali-g1.cp31.ott.cibntv.net, REJECT
-#   - DOMAIN, vali-ugc.cp31.ott.cibntv.net, REJECT
-#   - DOMAIN, yk-ssp.ad.youku.com, REJECT
-#   - DOMAIN, ykad-data.youku.com, REJECT
