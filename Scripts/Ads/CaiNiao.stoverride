@@ -1,8 +1,8 @@
 name: ComputeCitizen-菜鸟裹裹广告拦截
-desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼开屏拦截
+desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼/淘宝系开屏兜底
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
 category: 去广告
-date: "2025-09-24 16:20:00"
+date: "2025-09-24 16:36:00"
 
 http:
   mitm:
@@ -14,9 +14,11 @@ http:
     # 新增：小程序 & 埋点域
     - "guide-acs4miniapp-inner.m.taobao.com"
     - "mdap.alipay.com"
-    # 新增：咸鱼 Goofish（开屏相关）
+    # 新增：咸鱼 Goofish / 淘宝 acs（开屏常用）
     - "acs.m.goofish.com"
     - "g-acs.m.goofish.com"
+    - "acs.m.taobao.com"
+    - "g-acs.m.taobao.com"
 
   rewrite:
     # ================== 直接拒绝（不走脚本） ==================
@@ -52,11 +54,13 @@ http:
     # 新增：小程序内另一路广告拉取（与上方 guide-acs 域对齐）
     - ^https?:\/\/guide-acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
 
-    # ================== 咸鱼（Goofish）开屏专治 ==================
-    # 开屏广告：splash.ads —— 期望 JSON，统一空 JSON，避免 UI 异常
-    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop.*splash\.ads - reject-dict
-    # 曝光/打点：可直接 200 空体
-    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.ad\.expose - reject-200
+    # ================== 咸鱼（Goofish）/ 淘宝 acs —— 开屏兜底 ==================
+    # 1) 开屏广告：splash/launch/openscreen 等关键词 —— 期望 JSON，用空 JSON 更稳
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open(screen)?).*?(ad|ads?) - reject-dict
+    # 2) 旧口径：splash.ads 精准命中
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop.*splash\.ads - reject-dict
+    # 3) 曝光/打点：直接 200 空体
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.idle\.ad\.expose - reject-200
 
   script:
     # ================== 脚本精修（保持原来的逻辑） ==================
