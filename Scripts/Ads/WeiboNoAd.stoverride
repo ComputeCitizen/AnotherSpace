@@ -1,34 +1,71 @@
 name: ComputeCitizen-微博广告拦截
-desc: 感谢：@yichahucha（合并去重自他人规则，补充MITM与1条拒绝）
+desc: 感谢：@yichahucha（主脚本）｜合并 @ddgksf2013 的若干拒绝项与域名补全（去重/避冲突）
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Weibo.png
 category: 去广告
-date: "2025-09-22 09:45:00"
+date: "2025-09-24 17:30:00"
 
 http:
   mitm:
-    # 你的原有
+    # 你原有
     - "api.weibo.cn"
     - "mapi.weibo.com"
     - "*.uve.weibo.com"
     - "sdkapp.uve.weibo.com"
     - "wbapp.uve.weibo.com"
-    # 补充：用于拦截 oauth2/getaid（来自别人的规则）
+    # 你补充
     - "api.weibo.com"
+    # 进一步补全（开屏预加载 / 国际版 / 皮肤接口）
+    - "boot.biz.weibo.com"
+    - "new.vip.weibo.cn"
+    - "weibointl.api.weibo.cn"
+    - "weibointl.api.weibo.com"
+    # 国际版有民间写法 typo，两个都加上以防万一
+    - "api.touch-mobile.com"
+    - "api.touch-moblie.com"
 
-  # 新增的轻量 rewrite（来自别人），只做必要拒绝，避免脚本之外的漏网
   rewrite:
-    # 拦截 oauth2/getaid（有时用于设备标识/风控上报）
+    # ====== 仅拒绝类（避免与脚本重复处理） ======
+
+    # 设备标识/风控上报
     - ^https?:\/\/api\.weibo\.com\/oauth2\/getaid - reject-200
 
+    # （国内版）常见广告与弹窗接口 —— 这些不在 yichahucha 大正则覆盖范围
+    - ^https?:\/\/api\.weibo\.cn\/\d\/statuses\/container_positive - reject-200
+    - ^https?:\/\/api\.weibo\.cn\/\d\/push\/info - reject-200
+    - ^https?:\/\/api\.weibo\.cn\/.*account\/recommend_interesttags - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/.*\/media_homelist - reject-200
+    - ^https?:\/\/api\.weibo\.cn\/.*finder\/searchbarchange - reject-200
+    - ^https?:\/\/api\.weibo\.cn\/\d\/ad\/preload - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d\/profile\/recommend_popuser - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/.*discovery_home_bottom_getdotinfo - reject-dict
+    - ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/push\/daily - reject-dict
+    - ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/hot\/hours_spotlight - reject-dict
+
+    # 开屏预加载与 UVE 埋点
+    - ^https?:\/\/boot.*weibo\.com\/v\d\/ad\/realtime - reject-200
+    - ^https?:\/\/(preload-click|preload-impression)\.uve\.weibo\.com\/(interface\/wbpullad\/wbpullad_click\.php|wbapplua\/get_wbpullad_log\.lua) - reject
+    - ^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkconfig\.php - reject
+
+    # （国际版）若不装第三方脚本，这些直接拒绝更稳（不与 yichahucha 冲突）
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php\?a=open_app - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php\?a=hot_search_users - reject-dict
+    - ^https?:\/\/m?api\.weibo\.c(n|om)\/\d\/ad\/weibointl\? - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*a=get_searching_info - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*feed&a=search_topic - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*get_coopen_ads - reject-dict
+    # 个别“国际版开屏域”民间写法（有 typo），统一拒绝
+    - ^https?:\/\/api\.touch-?mob(lie|ile)\.com\/ - reject-200
+
   script:
-    # 开屏广告（原有；已覆盖 sdkapp 与 wbapp）
+    # —— 保留你原有两段，避免与上面的拒绝互相覆盖 —— 
+    # 开屏广告（覆盖 sdkapp 与 wbapp）
     - match: ^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua)
       name: WeiboLaunchScript
       type: response
       require-body: true
       timeout: 30
 
-    # 时间线/发现/卡片/视频/评论等广告统一走同一脚本（原有大正则，已包含别人2中拆分的各子接口）
+    # 时间线/发现/卡片/视频/评论等广告统一脚本（yichahucha 大正则）
     - match: ^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positives/get|(friends|video)(/|_)(mix)?timeline)|stories/(video_stream|home_list)|(groups|fangle)/timeline|profile/statuses|comments/build_comments|photo/recommend_list|service/picfeed|searchall|cardlist|page|!/(photos/pic_recommend_status|live/media_homelist)|video/tiny_stream_video_list|photo/info|remind/unread_count)
       name: WeiboAdScript
       type: response
