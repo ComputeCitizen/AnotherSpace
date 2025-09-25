@@ -1,5 +1,5 @@
 name: ComputeCitizen-干掉开屏广告们
-desc: 感谢@rexinwangyou37 ｜ 合并补漏：京东系若干入口
+desc: 感谢@rexinwangyou37 ｜ 合并补漏：京东系若干入口 + 下厨房/网易云补充（保留全部原有规则）
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 去广告
 date: "2025-09-24 16:05:00"
@@ -38,13 +38,24 @@ http:
     - "cloud.189.cn"
     - "zt-app.go189.cn"
 
-    # 新增（为京东系补漏，HTTPS 解密必需）
+    # 新增（京东系补漏，HTTPS 解密必需）
     - "api.m.jd.com"
     - "m.360buyimg.com"
     - "jdread-api.jd.com"
     - "router-app-api.jdcloud.com"
     - "bdsp-x.jd.com"
     - "dsp-x.jd.com"
+
+    # 新增（网易云：为后续接口拦截提供解密）
+    - "interface.music.163.com"
+    - "interface1.music.163.com"
+    - "interface2.music.163.com"
+    - "interface3.music.163.com"
+    - "interface4.music.163.com"
+    - "interface5.music.163.com"
+    - "iadmusicmat.music.126.net"
+    - "iadmat.nosdn.127.net"
+    - "iadmatapk.nosdn.127.net"
 
     # 其它与本清单强相关
     - "api.weibo.com"
@@ -166,7 +177,7 @@ http:
     # 大众点评 #开屏广告
     - ^https:\/\/img\.meituan\.net\/dpmobile\/.*\.(gif|jpg) - reject-200
     - ^https:\/\/img\.meituan\.net\/dpmobile\/.+93241\.png - reject-200
-    # 下厨房 #开屏广告
+    # 下厨房 #开屏广告（原有）
     - ^https?:\/\/api\.xiachufang\.com\/v\d\/ad/ - reject-200
     # 中信银行 #开屏广告
     - ^https?:\/\/wap\.bank\.ecitic\.com:6443\/NMBFOServer\/cbframework\.do\?act=CUBEPAGEDATA - reject-200
@@ -187,7 +198,7 @@ http:
     - ^https?:\/\/sdkaction\.biz\.weibo\.com\/.* - reject-200
     - ^https?:\/\/sdkclick\.biz\.weibo\.com\/.* - reject-200
     - ^https?:\/\/sdkmonitor\.biz\.weibo\.com\/.* - reject-200
-    # 网易云音乐
+    # 网易云音乐（原有基础）
     - ^https?:\/\/.+?\/eapi\/(ad|log)\/ - reject-200
     - ^https?:\/\/interface(\d)?\.music\.163\.com\/eapi\/ad\/ - reject-200
     - ^https?:\/\/iadmusicmat\.music\.126\.net\/.+\.jpg - reject-200
@@ -303,3 +314,21 @@ http:
     - ^https?:\/\/((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\/[a-z.]+\.tc\.qq\.com\/[\w\W]+_p20\d - reject-200
     - ^https?:\/\/[\s\S]*\/.+?\.tc\.qq\.com/.*?p201\.1\.mp4 - reject-img
     - ^https?:\/\/video\.dispatch\.tc\.qq\.com\/\w+\.p20\d\.1\.mp4 - reject-200
+
+    # ============ 新增补充 · 下厨房（不覆盖原有，只新增） ============
+    - ^https?:\/\/api\.xiachufang\.com\/v2\/homepage1810\/init_page\.json - reject-200
+    - ^https?:\/\/api\.xiachufang\.com\/v2\/account\/feeds_v7\.json - reject-200
+    - ^https?:\/\/api\.xiachufang\.com\/v2\/mark_mission\/get_sticker_info\.json - reject-200
+    - ^https?:\/\/api\.xiachufang\.com\/v2\/homepage\/paged_waterfall_recommendations\.json$ - response-body-json-jq 'del(.multiplex_cells[] | select(.recommendation_cell.impression_sensor_events[]?.properties.target_type? == "ad"))'
+    - ^https?:\/\/api\.xiachufang\.com\/v2\/config\/get\.json$ - response-body-json-jq 'del(.content.tab_name[] | select(. == "减脂" or . == "商店" or . == "分类"))'
+
+    # ============ 新增补充 · 网易云音乐（不覆盖原有，只新增） ============
+    - ^https?:\/\/interface\d?\.music\.163\.com\/eapi\/(?:delivery\/(batch-)?deliver|moment\/tab\/info\/|side-bar\/mini-program\/music-service\/account|yunbei\/account\/entrance\/) - reject-200
+    - ^https?:\/\/interface\d?\.music\.163\.com\/eapi\/(?:community\/friends\/fans-group\/artist\/group\/|mine\/applet\/redpoint|music\/songshare\/text\/recommend\/|resniche\/position\/play\/new\/|resniche\/tspopup\/show|resource\/comments?\/musiciansaid\/|user\/sub\/artist) - reject-200
+    - ^https?:\/\/interface\d?\.music\.163\.com\/w?e?api\/(ocpc\/)?ad\/ - reject-200
+    - ^https?:\/\/interface\d?\.music\.163\.com\/w?e?api\/search\/default - reject-200
+    - ^https?:\/\/interface\d?\.music\.163\.com\/w?e?api\/(?:homepage\/block\/page|link\/page\/rcmd\/(?:block\/resource\/multi\/refresh|resource\/show)) - reject-200
+    - ^https?:\/\/interface\d?\.music\.163\.com\/eapi\/my\/podcast\/tab\/recommend - reject-200
+    - ^https?:\/\/iadmusicmatvideo\.music\.126\.net\/ - reject-200
+    - ^https?:\/\/iadmat\.nosdn\.127\.net\/ - reject-200
+    - ^https?:\/\/iadmatapk\.nosdn\.127\.net\/ - reject-200
