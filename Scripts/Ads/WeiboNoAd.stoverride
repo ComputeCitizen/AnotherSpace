@@ -1,72 +1,84 @@
 name: ComputeCitizen-微博广告拦截
-desc: 主脚本@yichahucha｜补漏仅拒绝项（去重/避冲突），修正为稳命中写法
+desc: 主脚本@yichahucha｜融合 RuCu6 / neishe321 的必要拒绝项（去重/避冲突/稳命中）
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Weibo.png
 category: 去广告
-date: "2025-09-24 21:20:00"
+date: "2025-09-25 10:30:00"
 
 http:
   mitm:
-    # 为避免遗漏，统一放宽（确保你已安装证书并对这些域启用HTTPS解密）
+    # 覆盖国内/国际/开屏/会员等全部常见域；确保这些域均启用 HTTPS 解密
     - "*.weibo.cn"
     - "*.weibo.com"
+    - "api.weibo.cn"
+    - "mapi.weibo.com"
+    - "api.weibo.com"
     - "*.uve.weibo.com"
-    - "boot.biz.weibo.com"
+    - "bootpreload.uve.weibo.com"
+    - "bootrealtime.uve.weibo.com"
+    - "sdkapp.uve.weibo.com"
+    - "wbapp.uve.weibo.com"
     - "new.vip.weibo.cn"
     - "weibointl.api.weibo.cn"
     - "weibointl.api.weibo.com"
-    # 民间写法的“国际版开屏域”typo，两种都加
-    - "api.touch-mobile.com"
-    - "api.touch-moblie.com"
+    - "api-cloudim.api.weibo.com"   # 日志/上报（参考 RuCu6）
 
   rewrite:
-    # ===== 仅拒绝；改JSON交给脚本处理 =====
-
+    # ========== 仅拒绝直出/上报类；需要改 JSON 的交给脚本 ==========
     # 设备标识/风控
-    - ^https?:\\/\\/api\\.weibo\\.com\\/oauth2\\/getaid - reject-200
+    - ^https?:\/\/api\.weibo\.com\/oauth2\/getaid - reject-200
 
-    # 国内版常见广告/弹窗（不与脚本重合的直出型）
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/\\d+\\/statuses\\/container_positive - reject-200
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/\\d+\\/push\\/info - reject-200
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/.*account\\/recommend_interesttags - reject-dict
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/.*\\/media_homelist - reject-200
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/.*finder\\/searchbarchange - reject-200
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/\\d+\\/ad\\/preload - reject-dict
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/\\d+\\/profile\\/recommend_popuser - reject-dict
-    - ^https?:\\/\\/api\\.weibo\\.cn\\/.*discovery_home_bottom_getdotinfo - reject-dict
-    - ^https?:\\/\\/m?api\\.weibo\\.c(n|om)\\/\\d+\\/push\\/daily - reject-dict
-    - ^https?:\\/\\/m?api\\.weibo\\.c(n|om)\\/\\d+\\/hot\\/hours_spotlight - reject-dict
+    # 国内版直出推广/弹窗/热词等（参考 neishe321 / RuCu6，去重后保留）
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/push\/active - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/client\/addlog_batch - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/container\/asyn - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/shproxy\/chaohua\/discovery\/searchactive - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/checkin\/show - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/!\/live\/media_homelist - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/statuses\/container_positive - reject-200
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/!\/was\/finder\/searchbarchange - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/ad\/preload - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/profile\/recommend_popuser - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/\d+\/discovery_home_bottom_getdotinfo - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/2\/hot\/hours_spotlight - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/2\/push\/daily - reject-dict
 
-    # 开屏预加载 / UVE 埋点
-    - ^https?:\\/\\/boot.*weibo\\.com\\/v\\d+\\/ad\\/realtime - reject-200
-    - ^https?:\\/\\/(preload-click|preload-impression)\\.uve\\.weibo\\.com\\/(interface\\/wbpullad\\/wbpullad_click\\.php|wbapplua\\/get_wbpullad_log\\.lua) - reject
-    - ^https?:\\/\\/sdkapp\\.uve\\.weibo\\.com\\/interface\\/sdk\\/sdkconfig\\.php - reject
+    # UVE 开屏/埋点（坚决不直连，避免绕过 MITM）
+    - ^https?:\/\/bootpreload\.uve\.weibo\.com\/v\d\/ad\/preload - reject-200
+    - ^https?:\/\/bootrealtime\.uve\.weibo\.com\/v\d\/ad\/realtime - reject-200
+    - ^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkconfig\.php - reject
+    - ^https?:\/\/(preload-click|preload-impression)\.uve\.weibo\.com\/(interface\/wbpullad\/wbpullad_click\.php|wbapplua\/get_wbpullad_log\.lua) - reject
 
-    # 国际版（不与 yichahucha 的两脚本重叠，直接拒更稳）
-    - ^https?:\\/\\/weibointl\\.api\\.weibo\\.c(n|om)\\/portal\\.php\\?a=open_app - reject-dict
-    - ^https?:\\/\\/weibointl\\.api\\.weibo\\.c(n|om)\\/portal\\.php\\?a=hot_search_users - reject-dict
-    - ^https?:\\/\\/m?api\\.weibo\\.c(n|om)\\/\\d+\\/ad\\/weibointl\\? - reject-dict
-    - ^https?:\\/\\/weibointl\\.api\\.weibo\\.c(n|om)\\/portal\\.php.*a=get_searching_info - reject-dict
-    - ^https?:\\/\\/weibointl\\.api\\.weibo\\.c(n|om)\\/portal\\.php.*feed&a=search_topic - reject-dict
-    - ^https?:\\/\\/weibointl\\.api\\.weibo\\.c(n|om)\\/portal\\.php.*get_coopen_ads - reject-dict
-    # 国际版开屏域（常见拼写两种）
-    - ^https?:\\/\\/api\\.touch-?mob(lie|ile)\\.com\\/ - reject-200
+    # 长文章/卡片推广（直出）
+    - ^https?:\/\/(card\.weibo\.com|weibo\.com)\/(article\/m\/aj|ttarticle\/x\/m\/aj)\/(reward|uvead) - reject-dict
+
+    # 国际版直出
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php\?a=open_app - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php\?a=hot_search_users - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*a=get_searching_info - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*feed&a=search_topic - reject-dict
+    - ^https?:\/\/weibointl\.api\.weibo\.c(n|om)\/portal\.php.*get_coopen_ads - reject-dict
+    - ^https?:\/\/api\.weibo\.cn\/2\/ad\/weibointl\? - reject-dict
+
+    # 其它上报/收集（RuCu6）
+    - ^https?:\/\/api-cloudim\.api\.weibo\.com\/v1\/log\/ - reject-200
 
   script:
-    # 开屏广告（UVE 两入口）
-    - match: ^https?:\\/\\/(sdk|wb)app\\.uve\\.weibo\\.com(\\/interface\\/sdk\\/sdkad\\.php|\\/wbapplua\\/wbpullad\\.lua)
+    # ========== yichahucha 的两支主脚本：一支拦开屏、一支清时线/卡片等 ==========
+    # 开屏（UVE 两入口）
+    - match: ^https?:\/\/(sdk|wb)app\.uve\.weibo\.com(\/interface\/sdk\/sdkad\.php|\/wbapplua\/wbpullad\.lua)
       name: WeiboLaunchScript
       type: response
       require-body: true
       timeout: 30
 
-    # 时间线/发现/卡片/视频/评论等广告 —— 拆成两条，避免“m?api + (n|om)”的兼容坑
-    - match: ^https?:\\/\\/api\\.weibo\\.cn\\/2\\/(statuses\\/(unread|extend|positives\\/get|(friends|video)(\\/|_) (mix)?timeline)|stories\\/(video_stream|home_list)|(groups|fangle)\\/timeline|profile\\/statuses|comments\\/build_comments|photo\\/recommend_list|service\\/picfeed|searchall|cardlist|page|!\\/(photos\\/pic_recommend_status|live\\/media_homelist)|video\\/tiny_stream_video_list|photo\\/info|remind\\/unread_count)
+    # 时间线/发现/卡片/视频/评论等 —— 拆成两条，分别命中 api.weibo.cn 与 mapi.weibo.com
+    - match: ^https?:\/\/api\.weibo\.cn\/2\/(statuses\/(unread|extend|positives\/get|(friends|video)(\/|_)mix?timeline)|stories\/(video_stream|home_list)|(groups|fangle)\/timeline|profile\/statuses|comments\/build_comments|photo\/recommend_list|service\/picfeed|searchall|cardlist|page|!\/(photos\/pic_recommend_status|live\/media_homelist)|video\/tiny_stream_video_list|photo\/info|remind\/unread_count)
       name: WeiboAdScript
       type: response
       require-body: true
       timeout: 30
 
-    - match: ^https?:\\/\\/mapi\\.weibo\\.com\\/2\\/(statuses\\/(unread|extend|positives\\/get|(friends|video)(\\/|_) (mix)?timeline)|stories\\/(video_stream|home_list)|(groups|fangle)\\/timeline|profile\\/statuses|comments\\/build_comments|photo\\/recommend_list|service\\/picfeed|searchall|cardlist|page|!\\/(photos\\/pic_recommend_status|live\\/media_homelist)|video\\/tiny_stream_video_list|photo\\/info|remind\\/unread_count)
+    - match: ^https?:\/\/mapi\.weibo\.com\/2\/(statuses\/(unread|extend|positives\/get|(friends|video)(\/|_)mix?timeline)|stories\/(video_stream|home_list)|(groups|fangle)\/timeline|profile\/statuses|comments\/build_comments|photo\/recommend_list|service\/picfeed|searchall|cardlist|page|!\/(photos\/pic_recommend_status|live\/media_homelist)|video\/tiny_stream_video_list|photo\/info|remind\/unread_count)
       name: WeiboAdScript
       type: response
       require-body: true
