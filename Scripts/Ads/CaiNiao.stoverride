@@ -1,8 +1,8 @@
 name: ComputeCitizen-菜鸟裹裹广告拦截
-desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼/淘宝系开屏兜底（闲鱼增强）
+desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼/淘宝系开屏兜底（闲鱼强化）
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
 category: 去广告
-date: "2025-09-27 10:20:01"
+date: "2025-09-24 18:30:00"
 
 http:
   mitm:
@@ -13,12 +13,13 @@ http:
     - "amdc.m.taobao.com"
     - "guide-acs4miniapp-inner.m.taobao.com"
     - "mdap.alipay.com"
-    # 闲鱼/淘宝（含 g- 前缀与 guide- 前缀）
+    # 闲鱼/淘宝（含 g- 与 guide- 前缀）
     - "acs.m.goofish.com"
     - "g-acs.m.goofish.com"
     - "guide-acs.m.goofish.com"
     - "acs.m.taobao.com"
     - "g-acs.m.taobao.com"
+    - "guide-acs.m.taobao.com"
 
   rewrite:
     # ================== 菜鸟：直接拒绝（不走脚本） ==================
@@ -51,31 +52,31 @@ http:
     # 小程序广告（与 guide-acs 小程序域对齐）
     - ^https?:\/\/guide-acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
 
-    # ================== 闲鱼 / 淘宝 —— 开屏 & 首页兜底（强化版，精准在前） ==================
-    # A1) 旧口径精准：splash.ads（优先级最高）
+    # ================== 闲鱼 / 淘宝 —— 开屏 & 首页兜底（强化：精准在前） ==================
+    # A1) 旧口径精准：splash.ads（最高优先级）
     - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop.*?splash\.ads - reject-dict
-    # A2) 闲鱼 idle 命名系：开屏/启动/首页广告 拉取/查询
+    # A2) 闲鱼 idle 命名：开屏/启动/首页广告 拉取/查询
     - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\..*?(splash|launch|home|homepage|index)\.(ads?|ad)\.(fetch|query|get) - reject-dict
-    # A3) 更宽的闲鱼广告命中：idle.* 任意 ads 节点（避免误伤，加词边界）
+    # A3) 闲鱼更宽命中：idle.* 任意 ads 节点（加词边界防误伤）
     - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\..*?(?<![a-zA-Z])ads?(?![a-zA-Z]) - reject-dict
-    # A4) 通用开屏（兼容 open_screen / openScreen；广告词加词边界）
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen).*?(?<![a-z])ad(s)?(?![a-z]) - reject-dict
+    # A4) 通用开屏（兼容 open_screen / openScreen；ad/ads 词边界）
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen|homepage|index).*?(?<![a-zA-Z])ad(s)?(?![a-zA-Z]) - reject-dict
     # A5) 曝光/打点（放宽 taobao 子层级）
     - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\.ad\.expose - reject-200
-    # A6) 悬浮球策略（可选）
+    # A6) 悬浮球策略（不需要可保留拒绝；想保留功能就注释这一条）
     - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.user\.strategy\.list - reject-dict
-    # A7) guide-acs 的闲鱼开屏变体（个别渠道包走 guide-acs）
-    - ^https?:\/\/guide-acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen|homepage|index).*?(?<![a-z])ad(s)?(?![a-z]) - reject-dict
+    # A7) guide-acs 变体：部分渠道包走 guide-acs 域
+    - ^https?:\/\/guide-acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen|homepage|index).*?(?<![a-zA-Z])ad(s)?(?![a-zA-Z]) - reject-dict
 
   script:
-    # ================== 菜鸟：脚本精修（保持原逻辑） ==================
+    # ================== 菜鸟：脚本精修（去营销位/气泡等） ==================
     - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.app\.mine\.main\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
-    # AMDC（收窄路径便于观察是否进入脚本）
+    # AMDC（HTTP 明文；收窄路径方便观察是否进入脚本）
     - match: ^http:\/\/amdc\.m\.taobao\.com\/amdc\/mobileDispatch
       name: AmdcScript
       type: response
