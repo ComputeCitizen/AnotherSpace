@@ -2,7 +2,7 @@ name: ComputeCitizen-菜鸟裹裹广告拦截
 desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼/淘宝系开屏兜底（闲鱼强化）
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
 category: 去广告
-date: "2025-09-24 18:30:00"
+date: "2025-09-27 10:34:00"
 
 http:
   mitm:
