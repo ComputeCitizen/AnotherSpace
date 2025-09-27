@@ -2,7 +2,7 @@ name: ComputeCitizen-菜鸟裹裹广告拦截
 desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼/淘宝系开屏兜底
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
 category: 去广告
-date: "2025-09-24 18:30:00"
+date: "2025-09-27 10:17:00"
 
 http:
   mitm:
@@ -22,29 +22,29 @@ http:
 
   rewrite:
     # ================== 菜鸟：直接拒绝（不走脚本） ==================
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn - reject-200
-    - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show - reject-200
-    - ^https?:\/\/acs4miniapp-inner\.m\.taobao\.com/gw/mtop\.alimama\.abyss\.unionpage\.get - reject-200
-    - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.adx\.flyad\.getad - reject-200
-    - ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn - reject-200
+    - ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show - reject-200
+    - ^https?:\/\/acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.alimama\.abyss\.unionpage\.get - reject-200
+    - ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
+    - ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
 
     # 批量/索引广告 —— 期望 JSON，reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-dict
     # 广告关键词拉取 —— 期望 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword\.get\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.adkeyword\.get\.cn - reject-dict
 
     # 小程序推荐CPC/社区站点/活动/信用市场/资源页等 —— 期望 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbopen\.miniapp\.recommend\.cpc\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.cnactivitycenter - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.cncreditmarket\.hit\.getactivityhit\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbopen\.miniapp\.recommend\.cpc\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.cnactivitycenter - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.cncreditmarket\.hit\.getactivityhit\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-dict
 
     # 问卷/调研其它动作 —— 期望 JSON（保留 consultmerge 的硬拒绝做弹窗快挡）
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-dict
 
     # Tab 栏营销 —— 返回 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.tabbar\.marketing\.get\.cn - reject-dict
+    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.tabbar\.marketing\.get\.cn - reject-dict
 
     # 支付宝埋点日志（可能 Pinning，不命中属正常）
     - ^https?:\/\/mdap\.alipay\.com\/loggw\/dwcookieLogGet\.do - reject-200
@@ -53,59 +53,60 @@ http:
     - ^https?:\/\/guide-acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
 
     # ================== 咸鱼（Goofish）/ 淘宝 acs —— 开屏兜底 ==================
+    # ② 旧口径精准命中：splash.ads（前置，避免被通用规则抢先命中）
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop.*?splash\.ads - reject-dict
     # ① 通用开屏：包含 splash/launch/open(screen) 且带 ad/ads 关键词的广告接口 → 返回空 JSON 更稳
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open(screen)?).*?(ad|ads?) - reject-dict
-    # ② 旧口径精准命中：splash.ads
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop.*splash\.ads - reject-dict
-    # ③ 曝光/打点：直接 200 空体，避免回流
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.idle\.ad\.expose - reject-200
+    #    兼容 open_screen / openScreen；广告词加词边界，避免误伤 address/adapter 等
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen).*?(?<![a-z])ad(s)?(?![a-z]) - reject-dict
+    # ③ 曝光/打点：直接 200 空体，避免回流；放宽一层 taobao
+    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\.ad\.expose - reject-200
     # ④ 右下角悬浮球策略（非必须；不需要就打开，想保留功能可注释）
     - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.user\.strategy\.list - reject-dict
 
   script:
     # ================== 菜鸟：脚本精修（保持原来的逻辑） ==================
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.app\.mine\.main\.cn
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.app\.mine\.main\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
-    # AMDC 分流（HTTP，无需证书）
-    - match: ^http:\/\/amdc\.m\.taobao\.com
+    # AMDC 分流（HTTP，无需证书；收窄到具体路径便于确认是否进入脚本）
+    - match: ^http:\/\/amdc\.m\.taobao\.com\/amdc\/mobileDispatch
       name: AmdcScript
       type: response
       timeout: 30
 
     # 首页合并（交脚本去营销位/活动块）
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.homepage\.merge\.get\.cn
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.homepage\.merge\.get\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
     # 协议主页
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.nbpresentation\.protocol\.homepage\.get\.cn
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.protocol\.homepage\.get\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
     # 关键词（脚本兜底）
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.adkeyword
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.adkeyword
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
     # 广告索引（脚本兜底）
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.index\.cn
+    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.index\.cn
       name: CainiaoJsonScript
       type: response
       require-body: true
       timeout: 30
 
     # mshow（脚本兜底；直出已硬拒）
-    - match: ^https?:\/\/guide-acs\.m\.taobao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow
+    - match: ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow
       name: CainiaoJsonScript
       type: response
       require-body: true
