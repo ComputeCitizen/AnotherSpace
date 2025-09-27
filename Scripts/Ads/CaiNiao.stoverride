@@ -1,135 +1,97 @@
-name: ComputeCitizen-菜鸟裹裹广告拦截
-desc: 感谢@ddgksf2013、@PixivCat、@ChangXiaoqiang ｜ 合并咸鱼/淘宝系开屏兜底（闲鱼强化）
+name: ComputeCitizen-菜鸟&闲鱼-去广告（重写稳妥版）
+desc: 基于 ddgksf2013 规则逐条移植到 Stash；闲鱼的 jsonjq 改为直接拒绝或精简兜底
 icon: https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/Cainiao.png
 category: 去广告
-date: "2025-09-27 10:34:00"
+date: "2025-09-27 10:00:00"
 
 http:
   mitm:
-    # 菜鸟/淘宝/小程序/埋点
+    # 来自“菜鸟裹裹”脚本头：hostname=*.cainiao.com, guide-acs.m.taobao.com, acs4miniapp-inner.m.taobao.com
+    # Stash 不支持通配 *.cainiao.com，这里覆盖主要用到的域：
     - "cn-acs.m.cainiao.com"
     - "guide-acs.m.taobao.com"
     - "acs4miniapp-inner.m.taobao.com"
     - "amdc.m.taobao.com"
-    - "guide-acs4miniapp-inner.m.taobao.com"
-    - "mdap.alipay.com"
-    # 闲鱼/淘宝（含 g- 与 guide- 前缀）
+    # 来自“闲鱼”脚本头：
     - "acs.m.goofish.com"
     - "g-acs.m.goofish.com"
-    - "guide-acs.m.goofish.com"
-    - "acs.m.taobao.com"
-    - "g-acs.m.taobao.com"
-    - "guide-acs.m.taobao.com"
 
   rewrite:
-    # ================== 菜鸟：直接拒绝（不走脚本） ==================
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn - reject-200
-    - ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.show - reject-200
-    - ^https?:\/\/acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.alimama\.abyss\.unionpage\.get - reject-200
-    - ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
-    - ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
+    # ========== 菜鸟裹裹 / 支付宝小程序部分（逐条等价转换） ==========
 
-    # 批量/索引广告 —— 期望 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.adkeyword\.get\.cn - reject-dict
+    # [amdc 处理]（原：^http://amdc.m.taobao.com url script-response-body amdc.js）
+    # 这里先不脚本，A 版主打“稳”，仅保留脚本版在 B 中；A 版不写等价 rewrite
 
-    # 小程序推荐/活动/社区/信用市场/资源页 —— 期望 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbopen\.miniapp\.recommend\.cpc\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.cnactivitycenter - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.cncreditmarket\.hit\.getactivityhit\.cn - reject-dict
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn - reject-dict
+    # [我的页面去推广：engine.page.fetch 用脚本处理（A 版不改，见 B 版）]
 
-    # 问卷/调研 —— 期望 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-dict
+    # [首页中部问邻居推广]（原走脚本；A 版不处理，见 B 版）
 
-    # Tab 栏营销 —— 期望 JSON
-    - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.tabbar\.marketing\.get\.cn - reject-dict
+    # [首页惊喜福利推广]（原走脚本；A 版不处理，见 B 版）
 
-    # 支付宝埋点（命不中属正常）
-    - ^https?:\/\/mdap\.alipay\.com\/loggw\/dwcookieLogGet\.do - reject-200
+    # [搜索框下方今日好物推荐]（原走脚本；A 版不处理，见 B 版）
 
-    # 小程序广告（与 guide-acs 小程序域对齐）
-    - ^https?:\/\/guide-acs4miniapp-inner\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
+    # [通用广告请求]  原：^https?://[...].cainiao.com/gw/mtop.cainiao.guoguo.nbnetflow.ads.(?!.*_home) url reject-200
+    - ^https?:\/\/[a-zA-Z0-9_.-]+\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?!.*_home) - reject-dict
 
-    # ================== 闲鱼 / 淘宝 —— 开屏 & 首页兜底（强化：精准在前） ==================
-    # A1) 旧口径精准：splash.ads（最高优先级）
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop.*?splash\.ads - reject-dict
-    # A2) 闲鱼 idle 命名：开屏/启动/首页广告 拉取/查询
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\..*?(splash|launch|home|homepage|index)\.(ads?|ad)\.(fetch|query|get) - reject-dict
-    # A3) 闲鱼更宽命中：idle.* 任意 ads 节点（加词边界防误伤）
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\..*?(?<![a-zA-Z])ads?(?![a-zA-Z]) - reject-dict
-    # A4) 通用开屏（兼容 open_screen / openScreen；ad/ads 词边界）
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen|homepage|index).*?(?<![a-zA-Z])ad(s)?(?![a-zA-Z]) - reject-dict
-    # A5) 曝光/打点（放宽 taobao 子层级）
-    - ^https?:\/\/(g-)?acs\.m\.(goofish|taobao)\.com\/gw\/mtop\.(taobao\.)?idle\.ad\.expose - reject-200
-    # A6) 悬浮球策略（不需要可保留拒绝；想保留功能就注释这一条）
+    # [首页底部商品推广] 原：.../mtop.cainiao.nbcps.presentation.fetch.cn url reject-200
+    - ^https?:\/\/[a-zA-Z0-9_.-]+\.cainiao\.com\/gw\/mtop\.cainiao\.nbcps\.presentation\.fetch\.cn - reject-dict
+
+    # [支付宝小程序-通用广告请求]
+    - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\. - reject-dict
+
+    # [支付宝小程序-底部商品推广 新]
+    - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.alimama\.abyss\.unionpage\.get - reject-dict
+
+    # [支付宝小程序-底部商品推广 旧]
+    - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-dict
+
+    # [支付宝小程序-匿名选择弹窗]
+    - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
+
+    # ========== 闲鱼（Goofish）部分（逐条等价转换，A 版“稳妥兜底”） ==========
+
+    # [host-suffix iyes.youku.com 拦截]
+    - ^https?:\/\/[^\/]*iyes\.youku\.com\/ - reject-200
+
+    # [开屏广告 splash.ads]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop.*splash\.ads - reject-dict
+
+    # [开屏通用曝光 idle.ad.expose]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.ad\.expose - reject-200
+
+    # ====== 以下原本是 jsonjq-response-body 的“精修”，A 版统一做“安全精简/拒绝”处理 ======
+    # 说明：这些接口多数是“推荐/Tab/信息流”容器，直接拒绝会使相关区块为空/不展示，达到去广告效果但可能少量功能块缺失
+    # 你若要“保留功能、仅去广告项”，用下方 B 版（脚本等价）。
+
+    # [首页右下角悬浮球：把 strategies 置空]
     - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.user\.strategy\.list - reject-dict
-    # A7) guide-acs 变体：部分渠道包走 guide-acs 域
-    - ^https?:\/\/guide-acs\.m\.(goofish|taobao)\.com\/gw\/mtop\..*?(splash|launch|open[_-]?screen|openScreen|homepage|index).*?(?<![a-zA-Z])ad(s)?(?![a-zA-Z]) - reject-dict
 
-  script:
-    # ================== 菜鸟：脚本精修（去营销位/气泡等） ==================
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.app\.mine\.main\.cn
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [首页顶部Tab：移除省钱 Tab]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlehome\.home\.circle\.list - reject-dict
 
-    # AMDC（HTTP 明文；收窄路径方便观察是否进入脚本）
-    - match: ^http:\/\/amdc\.m\.taobao\.com\/amdc\/mobileDispatch
-      name: AmdcScript
-      type: response
-      timeout: 30
+    # [首页信息流 nextfresh：只保留第一项 + sections 仅 item]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlehome\.home\.nextfresh - reject-dict
 
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.homepage\.merge\.get\.cn
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [搜索填词：置空 singleShadeWords]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlemtopsearch\.search\.shade - reject-dict
 
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.protocol\.homepage\.get\.cn
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [猜你喜欢：置空 cardList]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlemtopsearch\.item\.search\.activate - reject-dict
 
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.adkeyword
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [搜索发现：删除 resultList]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlemtopsearch\.search\.discover - reject-dict
 
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.index\.cn
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [我的页面：只保留 head/user/trade 区，其他清空]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.user\.page\.my\.adapter - reject-dict
 
-    - match: ^https?:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [我的页信息流：删除 sections]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.item\.buy\.feeds - reject-dict
 
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.(pickup\.empty\.page|protocol\.homepage)\.get\.cn
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [本地信息流：只保留 item 类型]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.local\.home - reject-dict
 
-    - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.nbfriend\.message\.conversation\.list\.cn
-      name: CainiaoJsonScript
-      type: response
-      require-body: true
-      timeout: 30
+    # [搜索结果信息流：只保留 biz_type=item]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlemtopsearch\.search - reject-dict
 
-script-providers:
-  CainiaoJsonScript:
-    url: https://raw.githubusercontent.com/ddgksf2013/Scripts/master/cainiao_json.js
-    interval: 86400
-    type: http
-  AmdcScript:
-    url: https://raw.githubusercontent.com/ddgksf2013/Scripts/master/amdc.js
-    interval: 86400
-    type: http
+    # [商品底部推荐：剔除 mamaAD]
+    - ^https?:\/\/(g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.item\.recommend - reject-dict
