@@ -78,8 +78,8 @@ http:
 
   rewrite:
     # ================= 京东系（合并补充 + 修正） =================
-    # 京东开屏/运营大图（尺寸通配）
-    - ^https?:\/\/m\.360buyimg\.com\/mobilecms\/s\d+x\d+_jfs - reject-200
+    # 京东开屏/运营大图（仅限带开屏语义的图片，避免误杀商品图）
+    - ^https?:\/\/m\.360buyimg\.com\/mobilecms\/s\d+x\d+_jfs\/.*(splash|start|launch|openscreen|loading) - reject-200
     # 京东 Material 广告下发
     - ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(start|queryMaterialAdverts) - reject-dict
     # 搜索框热词 / 站点推荐 / 统一推荐
