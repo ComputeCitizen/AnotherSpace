@@ -28,5 +28,3 @@ payload:
   - '+.podcasts.apple.com'
   #- '+.apmlifi.com'
   - '+.immersivetranslate.com'
-  - '+.iyf.tv'
-  - '+.yfsp.tv'
