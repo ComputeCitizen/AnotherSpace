@@ -44,3 +44,5 @@ payload:
   - '+.ulivetv.net'
   - '+.v1.ax'
   - '+.v82u1l.com'
+  - '+.iyf.tv'
+  - '+.yfsp.tv'
