@@ -27,4 +27,4 @@ payload:
   - '+.ts.net'
   - '+.podcasts.apple.com'
   #- '+.apmlifi.com'
-  - '+.immersivetranslate.com'
+  #- '+.immersivetranslate.com'
