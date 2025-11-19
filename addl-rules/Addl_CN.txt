@@ -16,7 +16,6 @@ payload:
   - '+.apmlifi.com'
   - '+.dji.com'
   - '+.apple.com.cn'
-  - '+.immersivetranslate.com'
   - '+.tnas.online'
   - '+.tnas.com'
   - '+.terra-master.com'
