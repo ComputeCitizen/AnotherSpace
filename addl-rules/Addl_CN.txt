@@ -1,6 +1,5 @@
 payload:
   - '+.lencr.org'
-  #- '+.bfzycdn.com'
   - '+.bfzypic.com'
   - '+.bdzybf7.com'
   - '+.bdzyimg.com'
@@ -8,7 +7,6 @@ payload:
   - '+.liftguard.top'
   - '+.unispc.com'
   - '+.xfusion.com'
-  #- 'client.amplifi.com'
   - '+.iffrc.com'
   - '+.msftconnecttest.com'
   - '+.cyjysoft.com'
@@ -22,4 +20,3 @@ payload:
   - '+.aaplimg.com'
   - '+.microsoft.com'
   - '+.microsoftonline.com'
-  
