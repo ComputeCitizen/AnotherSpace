@@ -19,6 +19,7 @@ payload:
   - '+.efhie.com'
   - '+.global-cdn.me'
   - '+.generalcdn.com'
+  - '+.tv.global.mi.com'
   - '+.haiwaikan.com'
   - '+.histar.tv'
   - '+.hlive.io'
