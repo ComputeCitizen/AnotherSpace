@@ -1,6 +1,7 @@
 payload:
   - '+.91p49.com'
   - '+.anygate.vip'
+  - '+.aiyifan.tv'
   - '+.arebyte.xyz'
   - '+.bfvvs.com'
   - '+.biggggg.com'
