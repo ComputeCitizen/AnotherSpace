@@ -1,5 +1,5 @@
 payload:
-  #General
+  # General
   - 'api.statsig.com'
   - 'browser-intake-datadoghq.com'
   - 'openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net'
@@ -22,28 +22,46 @@ payload:
   - '+.poecdn.net'
   - '+.segment.io'
   - '+.stripe.com'
-  #Cloudflare
+  # Cloudflare
   - 'gateway.ai.cloudflare.com'
   - 'chat.openai.com.cdn.cloudflare.net'
   - '+.cdn.cloudflare.net'
-  #Apple Intelligence
+  # Apple Intelligence
   - 'smoot.apple.com'
   - 'apple-relay.apple.com'
   - 'apple-relay.cloudflare.com'
   - 'apple-relay.fastly-edge.com'
   - 'cp4.cloudflare.com'
   - 'guzzoni.apple.com'
-  #Google
+  # Google AI (Merged & Enhanced)
+  ## Main Sites & Brands
   - 'ai.google.dev'
-  - 'bard.google.com'
-  - 'gemini.google.com'
-  - 'generativelanguage.googleapis.com'
-  - 'proactivebackend-pa.googleapis.com'
-  - 'aistudio.google.com'
+  - '+.aistudio.google.com'
+  - '+.makersuite.google.com'
+  - '+.bard.google.com'
+  - '+.gemini.google.com'
+  - '+.gemini.google'
+  - '+.generativeai.google'
+  - '+.deepmind.com'
+  - '+.deepmind.google'
+  - '+.notebooklm.google.com'
+  - '+.notebooklm.google'
+  - '+.jules.google.com'
+  - '+.jules.google'
+  - '+.labs.google'
+  ## Google APIs & Backends
+  - '+.generativelanguage.googleapis.com'
+  - '+.proactivebackend-pa.googleapis.com'
+  - '+.geller-pa.googleapis.com'
+  - '+.robinfrontend-pa.googleapis.com'
+  - '+.aisandbox-pa.googleapis.com'
+  - '+.aida.googleapis.com'
+  - 'alkalicore-pa.clients6.google.com'
   - 'alkalimakersuite-pa.clients6.google.com'
-  #JetBrains AI
+  - 'webchannel-alkalimakersuite-pa.clients6.google.com'
+  # JetBrains AI
   - 'grazie.ai'
-  #openai
+  # openai
   - '+.openai.com'
   - '+.sentry.io'
   - 'cdn.openai.com'
@@ -59,32 +77,28 @@ payload:
   - '+.auth0.com'
   - 'chatgpt.livekit.cloud'
   - 'sfo3.turn.livekit.cloud'
-  #claude
+  # claude
   - '+.claude.ai'
   - '+.anthropic.com'
   - 'servd-anthropic-website.b-cdn.net'
   - 'www.claudeusercontent.com'
   - 'cdn.usefathom.com'
   - '+.claudeusercontent.com'
-  #grok
+  # grok
   - '+.x.ai'
   - '+.grok.com'
-  #bing AI
+  # bing AI
   - '+.bing.com'
   - 'copilot.microsoft.com'
   - 'githubcopilot.com'
-
-  #Midjourney
+  # Midjourney
   - '+.discord.com'
   - '+.midjourney.com'
   - '+.challenges.cloudflare.com'
   - '+.recaptcha.net'
-  #Apple AI
+  # Apple AI
   - '+.apple-relay.cloudflare.com'
   - '+.apple-relay.apple.com'
-
   # Manus
   - '+.manus.space'
   - '+.manus.im'
-
-
