@@ -20,3 +20,4 @@ payload:
   - '+.aaplimg.com'
   - '+.microsoft.com'
   - '+.microsoftonline.com'
+  - '+.immersivetranslate.com'
