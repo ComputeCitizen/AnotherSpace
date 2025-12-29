@@ -79,6 +79,7 @@ payload:
   - 'sfo3.turn.livekit.cloud'
   # claude
   - '+.claude.ai'
+  - '+.claude.com'
   - '+.anthropic.com'
   - 'servd-anthropic-website.b-cdn.net'
   - 'www.claudeusercontent.com'
