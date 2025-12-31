@@ -201,6 +201,7 @@ payload:
   - '+.wenjian.de'
   - '+.wiri.tk'
   - '+.xiaoyi.one'
+  - '+.xxlb.net'
   - '+.xmsl.org'
   - '+.zi0.icu'
   - '+.zox.show'
