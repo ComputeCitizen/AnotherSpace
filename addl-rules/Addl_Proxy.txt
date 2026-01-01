@@ -28,3 +28,4 @@ payload:
   - '+.podcasts.apple.com'
   #- '+.apmlifi.com'
   - '+.immersivetranslate.com'
+  - '+.browserleaks.com'
