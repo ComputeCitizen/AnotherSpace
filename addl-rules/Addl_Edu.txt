@@ -1,4 +1,5 @@
 payload:
+  - '+.edu'
   - '+.topuniversities.com'
   - '+.timeshighereducation.com'
   - '+.niche.com'
