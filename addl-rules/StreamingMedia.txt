@@ -1,4 +1,5 @@
 payload:
+  - '+.trakt.tv'
   - '+.91p49.com'
   - '+.anygate.vip'
   - '+.aiyifan.tv'
