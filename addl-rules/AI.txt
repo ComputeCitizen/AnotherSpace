@@ -9,7 +9,7 @@ payload:
   - 'static.cloudflareinsights.com'
   - '+.algolia.net'
   - '+.client-api.arkoselabs.com'
-  - '+.events.statsigapi.net'
+  - '+.statsigapi.net'
   - '+.featuregates.org'
   - '+.identrust.com'
   - '+.intercom.io'
