@@ -1,44 +1,63 @@
-name: Spotify解锁(2026.02.02)
-desc: 基于daozen仓库规则转换。去除广告、假显示Premium。建议登录后开启并重启App。
-
+name: Spotify 混合增强版 (2026.02.02)
+desc: 使用Daozen进行Premium解锁，外挂Chxm脚本专门去除首页/Tab栏广告。
+icon: https://raw.githubusercontent.com/sooyaaabo/IconLibrary/main/App/Spotify.png
+category: 去广告
+date: "2026-02-02 10:00:00"
 http:
   mitm:
     - "spclient.wg.spotify.com"
     - "*spclient.spotify.com"
     - "*.wg.spotify.com"
     - "*.spotify.com"
+    # 确保涵盖所有spclient，防止广告接口漏网
+    - "spclient.wg.spotify.com"
+    - "*.spclient.spotify.com"
 
   script:
-    # 1. Header 处理 (对应 QX script-request-header /customize)
+    # ================= 核心解锁层 (Daozen) =================
+    # 1. Header 修正
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$
-      name: spotify_header
+      name: spotify_core_header
       type: request
       timeout: 10
 
-    # 2. Proto 处理 (对应 QX script-response-body /bootstrap & /customize)
+    # 2. Premium 核心破解 (Bootstrap & Customize)
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
-      name: spotify_proto
+      name: spotify_core_proto
       type: response
       require-body: true
       binary-mode: true
       timeout: 10
 
-    # 3. JSON 处理 (对应 QX script-request-header /artist & /album)
-    # QX原配置此处使用 request-header，Stash 使用 request 即可达到相同修改 Header 或请求的效果
+    # 3. 歌手专辑列表修正
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/
-      name: spotify_json
+      name: spotify_core_json
       type: request
       timeout: 10
 
+    # ================= UI 净化层 (Chxm1023) =================
+    # 4. 首页/Tab栏/搜索页 深度去广告 (这是去除中间广告的关键)
+    # 这里的正则专门匹配 Daozen 没处理的 UI 接口
+    - match: ^https:\/\/spclient\.wg\.spotify\.com\/(home-view\/v1\/home|playlist\/v2\/playlist|searchview\/v3\/search|allboarding\/v1\/header)
+      name: spotify_ui_cleaner
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 10
+
 script-providers:
-  spotify_header:
+  # Daozen 源
+  spotify_core_header:
     url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-qx-header.js
     interval: 86400
-  
-  spotify_proto:
+  spotify_core_proto:
     url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-proto.js
     interval: 86400
-    
-  spotify_json:
+  spotify_core_json:
     url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-json.js
+    interval: 86400
+    
+  # Chxm1023 源 (仅用于净化)
+  spotify_ui_cleaner:
+    url: https://raw.githubusercontent.com/chxm1023/Rewrite/main/Spotify.js
     interval: 86400
