@@ -16,6 +16,7 @@ http:
     - match: ^https:\/\/.*spotify\.com\/.*pendragon.*FetchMessageList
       name: reject_upsell
       type: reject
+
     # 1. Header
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$
       name: spotify_core_header
