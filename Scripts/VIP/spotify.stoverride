@@ -12,18 +12,13 @@ http:
     - "*.spotify.com"
 
   script:
-    # 0. 去广告
-    - match: ^https:\/\/.*spotify\.com\/.*pendragon.*FetchMessageList
-      name: reject_upsell
-      type: reject
-
-    # 1. Header
+    # 1. Header 修正
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$
       name: spotify_core_header
       type: request
       timeout: 10
 
-    # 2. Proto
+    # 2. Premium 核心破解 (仅匹配 bootstrap 和 customize)
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
       name: spotify_core_proto
       type: response
@@ -31,7 +26,7 @@ http:
       binary-mode: true
       timeout: 10
 
-    # 3. JSON (列表修正)
+    # 3. JSON (歌手专辑列表修正)
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/
       name: spotify_core_json
       type: request
