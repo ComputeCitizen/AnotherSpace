@@ -10,6 +10,7 @@ http:
     - "*spclient.spotify.com"
     - "*.wg.spotify.com"
     - "*.spotify.com"
+    - "guc3-spclient.spotify.com:443"
 
   script:
     # 1. Header 修正
@@ -32,6 +33,14 @@ http:
       type: request
       timeout: 10
 
+    # 4.消除中间广告
+    - match: ^https:\/\/.*spotify\.com\/.*pendragon.*FetchMessageList
+      name: spotify_clean_upsell
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 10
+
 
 script-providers:
   spotify_core_header:
@@ -43,4 +52,7 @@ script-providers:
   spotify_core_json:
     url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-json.js
     interval: 86400
- 
+  spotify_clean_upsell:
+    url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/release/Scripts/VIP/SpotifyAds.js
+    interval: 86400
+    
