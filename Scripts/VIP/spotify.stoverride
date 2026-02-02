@@ -1,0 +1,44 @@
+name: Spotify解锁(2026.02.02)
+desc: 基于daozen仓库规则转换。去除广告、假显示Premium。建议登录后开启并重启App。
+
+http:
+  mitm:
+    - "spclient.wg.spotify.com"
+    - "*spclient.spotify.com"
+    - "*.wg.spotify.com"
+    - "*.spotify.com"
+
+  script:
+    # 1. Header 处理 (对应 QX script-request-header /customize)
+    - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$
+      name: spotify_header
+      type: request
+      timeout: 10
+
+    # 2. Proto 处理 (对应 QX script-response-body /bootstrap & /customize)
+    - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
+      name: spotify_proto
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 10
+
+    # 3. JSON 处理 (对应 QX script-request-header /artist & /album)
+    # QX原配置此处使用 request-header，Stash 使用 request 即可达到相同修改 Header 或请求的效果
+    - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/
+      name: spotify_json
+      type: request
+      timeout: 10
+
+script-providers:
+  spotify_header:
+    url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-qx-header.js
+    interval: 86400
+  
+  spotify_proto:
+    url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-proto.js
+    interval: 86400
+    
+  spotify_json:
+    url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-json.js
+    interval: 86400
