@@ -61,6 +61,7 @@ http:
     # ================= 🛡️ 第三道防线：禁止跳转 (防手误) =================
     # 万一框还在，点击后直接报错，不让它打开浏览器加载 DoubleClick
     - match: ^https?:\/\/.*(doubleclick\.net|googleadservices\.com|pagead)
+      name: reject_ad_click
       type: reject
 
 
