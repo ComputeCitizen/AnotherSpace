@@ -34,35 +34,12 @@ http:
       timeout: 10
 
     # 4.消除中间广告
-    #- match: ^https:\/\/.*spotify\.com\/.*pendragon.*FetchMessageList
-    #  name: spotify_clean_upsell
-    #  type: response
-    #  require-body: true
-    #  binary-mode: true
-    #  timeout: 10
-
-    # ================= 🛡️ 第一道防线：源头阻断 (去框关键) =================
-    # 拦截广告配置接口，告诉 App "没有广告"，从而防止首页挖坑
-    # 匹配 /ads/v1, /ad-logic/, /slots/ 等常见广告配置路径
-    - match: ^https:\/\/.*spotify\.com\/.*(ads\/v1|ad-logic\/|InAppMessageService)
+    - match: ^https:\/\/.*spotify\.com\/.*(ads\/v1|ad-logic\/|InAppMessageService|pendragon.*FetchMessageList)
       name: spotify_clean_upsell
       type: response
       require-body: true
       timeout: 10
 
-    # ================= 🛡️ 第二道防线：内容清空 (兜底) =================
-    # 如果框还在，至少把内容清空 (就是你刚才用的那个)
-    - match: ^https:\/\/.*spotify\.com\/.*pendragon.*FetchMessageList
-      name: spotify_clean_upsell
-      type: response
-      require-body: true
-      timeout: 10
-
-    # ================= 🛡️ 第三道防线：禁止跳转 (防手误) =================
-    # 万一框还在，点击后直接报错，不让它打开浏览器加载 DoubleClick
-    - match: ^https?:\/\/.*(doubleclick\.net|googleadservices\.com|pagead)
-      name: reject_ad_click
-      type: reject
 
 
 script-providers:
