@@ -12,13 +12,17 @@ http:
     - "*.spotify.com"
 
   script:
-    # 1. Header (核心)
+    # 0. 去广告
+    - match: ^https:\/\/.*spotify\.com\/.*pendragon.*FetchMessageList
+      name: reject_upsell
+      type: reject
+    # 1. Header
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$
       name: spotify_core_header
       type: request
       timeout: 10
 
-    # 2. Proto (核心)
+    # 2. Proto
     - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
       name: spotify_core_proto
       type: response
@@ -32,13 +36,6 @@ http:
       type: request
       timeout: 10
 
-    # 4.首页去广告
-    - match: ^https:\/\/spclient\.wg\.spotify\.com\/(home-view\/v1\/home|playlist\/v2\/playlist|searchview\/v3\/search|allboarding\/v1\/header)
-      name: spotify_ui_cleaner
-      type: response
-      require-body: true
-      binary-mode: true
-      timeout: 10
 
 script-providers:
   spotify_core_header:
@@ -50,6 +47,4 @@ script-providers:
   spotify_core_json:
     url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-json.js
     interval: 86400
-  spotify_ui_cleaner:
-   url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/release/Scripts/VIP/SpotifyAds.js
-   interval: 86400
+ 
