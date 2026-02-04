@@ -15,4 +15,3 @@ payload:
   - '+.tnas.com'
   - '+.terra-master.com'
   - '+.aaplimg.com'
-  - '+.microsoftonline.com'
