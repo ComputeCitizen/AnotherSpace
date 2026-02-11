@@ -3,6 +3,8 @@ payload:
   - '+.bfzypic.com'
   - '+.bdzybf7.com'
   - '+.bdzyimg.com'
+  - 'bj.liftguard.vip'
+  - '+.liftguard.top'
   - '+.msftconnecttest.com'
   - '+.tnas.online'
   - '+.tnas.com'
