@@ -1,4 +1,5 @@
 payload:
+  - 'static.cloudflareinsights.com'
   - '+.notion.so'
   - '+.srv.nintendo.net'
   - '+.tailscale.com'
