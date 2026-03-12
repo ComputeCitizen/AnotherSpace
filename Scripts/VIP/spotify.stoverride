@@ -1,58 +1,43 @@
-name: Spotify解锁(2026.02.02)
-desc: 基于daozen仓库规则转换。去除广告、假显示Premium。建议登录后开启并重启App。
-icon: https://raw.githubusercontent.com/sooyaaabo/IconLibrary/main/App/Spotify.png
-category: 去广告
-date: "2026-02-02 10:01:01"
+name: SpotifyTest
+desc: 由 Surge/Loon/QX 风格转换为 Stash YAML；包含 header-rewrite、MITM、3 条脚本规则
 
 http:
   mitm:
-    - "spclient.wg.spotify.com"
-    - "*spclient.spotify.com"
-    - "*.wg.spotify.com"
-    - "*.spotify.com"
-    - "guc3-spclient.spotify.com:443"
+    - 'spclient.wg.spotify.com'
+    - '*spclient.spotify.com'
+
+  header-rewrite:
+    - ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$ request-del if-none-match
 
   script:
-    # 1. Header 修正
-    - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$
-      name: spotify_core_header
+    - match: ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/
+      name: spotify_json
       type: request
       timeout: 10
 
-    # 2. Premium 核心破解 (仅匹配 bootstrap 和 customize)
-    - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
-      name: spotify_core_proto
+    - match: ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/device-capabilities\/v1\/capabilities
+      name: spotify_json2
+      type: response
+      require-body: true
+      timeout: 10
+
+    - match: ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
+      name: spotify_proto
       type: response
       require-body: true
       binary-mode: true
+      max-size: 0
       timeout: 10
-
-    # 3. JSON (歌手专辑列表修正)
-    - match: ^https:\/\/((gae2-)?spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/
-      name: spotify_core_json
-      type: request
-      timeout: 10
-
-    # 4.消除中间广告
-    - match: ^https:\/\/.*spotify\.com\/.*(ads\/v1|ad-logic\/|InAppMessageService|pendragon.*FetchMessageList)
-      name: spotify_clean_upsell
-      type: response
-      require-body: true
-      timeout: 10
-
-
 
 script-providers:
-  spotify_core_header:
-    url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-qx-header.js
+  spotify_json:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-json.js
     interval: 86400
-  spotify_core_proto:
-    url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-proto.js
+
+  spotify_json2:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-json2.js
     interval: 86400
-  spotify_core_json:
-    url: https://raw.githubusercontent.com/daozen/rules/master/js/spotify-json.js
-    interval: 86400
-  spotify_clean_upsell:
-    url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/release/Scripts/VIP/SpotifyAds.js
-    interval: 86400
-    
+
+  spotify_proto:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-proto-test.js
+    interval: 0
