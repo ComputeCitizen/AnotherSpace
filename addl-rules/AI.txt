@@ -78,14 +78,6 @@ payload:
   - '+.auth0.com'
   - 'chatgpt.livekit.cloud'
   - 'sfo3.turn.livekit.cloud'
-  # claude
-  - '+.claude.ai'
-  - '+.claude.com'
-  - '+.anthropic.com'
-  - 'servd-anthropic-website.b-cdn.net'
-  - 'www.claudeusercontent.com'
-  - 'cdn.usefathom.com'
-  - '+.claudeusercontent.com'
   # grok
   - '+.x.ai'
   - '+.grok.com'
