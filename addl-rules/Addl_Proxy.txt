@@ -30,3 +30,4 @@ payload:
   #- '+.apmlifi.com'
   - '+.immersivetranslate.com'
   - '+.browserleaks.com'
+  - '+.scydao.com'
