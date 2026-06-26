@@ -50,6 +50,8 @@ payload:
   - '+.jules.google.com'
   - '+.jules.google'
   - '+.labs.google'
+  - '+.ai.google'
+  - '+.proactive.google.com'
   ## Google APIs & Backends
   - '+.generativelanguage.googleapis.com'
   - '+.proactivebackend-pa.googleapis.com'
