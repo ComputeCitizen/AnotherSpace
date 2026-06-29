@@ -95,6 +95,7 @@ payload:
   - '+.fz96110.com'
   - '+.spstmind.com'
   - 'snowflake.qq.com'
+  - '+.tubly.download'
   - '+.etoolads.cn'
   - '+.hgdggmao.cn'
 
