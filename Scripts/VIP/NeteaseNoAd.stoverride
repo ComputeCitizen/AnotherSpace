@@ -254,7 +254,11 @@ http:
 # =========================================================
 
 script-providers:
-
   "netease-adblock":
     url: https://gist.githubusercontent.com/ddgksf2013/4f53b7c6083678df25fecc8ff68b52c4/raw/netease.adblock.js
     interval: 86400
+    headers:
+      User-Agent: Stash
+      Accept:
+        - application/javascript
+        - text/plain
