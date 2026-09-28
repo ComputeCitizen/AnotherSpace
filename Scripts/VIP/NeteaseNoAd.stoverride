@@ -1,0 +1,260 @@
+name: |-
+  网易云音乐净化[墨鱼版-Stash]
+desc: |-
+  基于 ddgksf2013/Rewrite 的网易云音乐净化规则适配 Stash。
+  最大程度保留墨鱼原版规则与原始 JS，仅进行 Stash stoverride 语法适配。
+author: |-
+  ddgksf2013 / Stash Adaptation
+version: |-
+  1.0.33-stash
+lastModified: |-
+  2026-09-28
+homepage: |-
+  https://github.com/ddgksf2013/Rewrite
+
+http:
+
+  mitm:
+    - "interface.music.163.com"
+    - "interface1.music.163.com"
+    - "interface2.music.163.com"
+    - "interface3.music.163.com"
+
+  url-rewrite:
+
+    # =====================================================
+    # 网易云推广区 - reject-200
+    # =====================================================
+
+    # 活动推广
+    - >-
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/content\/activity\/music\/jar\/template\/list - reject-200
+
+    # 启动领VIP弹窗
+    - >-
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/sp\/flow\/popup\/query - reject-200
+
+
+    # =====================================================
+    # 网易云侧栏区 - reject-200
+    # =====================================================
+
+    # 优惠券
+    - >-
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vipmall\/couponcfg\/get - reject-200
+
+
+    # =====================================================
+    # 网易云歌曲区 - reject-200
+    # =====================================================
+
+    # 活动推广
+    - >-
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/w?eapi\/(resource-exposure\/)?activity - reject-200
+
+    # 评论区插入推广
+    - >-
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/comment\/feed\/inserted\/resources - reject-200
+
+    # 购买实体专辑
+    - >-
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/resource-exposure\/config - reject-200
+
+
+  script:
+
+    # =====================================================
+    # 网易云框架区
+    # =====================================================
+
+    # 底部Tab
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/home\/framework\/tab
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 发现页
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/page\/discovery\/resource\/show
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 首推荐页
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/page\/rcmd\/resource\/show
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 软件更新
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ios\/upgrade\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+
+    # =====================================================
+    # 网易云搜索区
+    # =====================================================
+
+    # 搜索默认填词
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/default\/keyword\/list
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 猜你喜欢
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/rcmd\/keyword\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 搜索下方Chart
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/chart\/list
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 搜索Chart
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/chart\/detail
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 相关搜索
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/suggest\/keyword\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 特殊词
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/specialkeyword\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+
+    # =====================================================
+    # 网易云推广区
+    # =====================================================
+
+    # 广告加载
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/loading\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 广告实时
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/loading\/current
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 广告Get
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 插入广告
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/position\/show\/resource
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 歌单顶部广告
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/scene\/show\/resource
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 弹窗免费听歌
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vip\/cashier\/tspopup\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+
+    # =====================================================
+    # 网易云侧栏区
+    # =====================================================
+
+    # 侧栏账户
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vipnewcenter\/app\/resource\/newaccountpage
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 侧栏推广
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/side-bar\/mini-program\/music-service\/account
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 侧边VIP推广
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/delivery\/deliver
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 侧边浮层
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/delivery\/batch-deliver
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 侧边兑换黑胶Tips
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/yunbei\/account\/entrance\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+    # 侧边创作福利
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/creator\/musician\/reminder\/message\/get
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+
+    # =====================================================
+    # 网易云歌曲区
+    # =====================================================
+
+    # 评论区插入推广 / Batch
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/batch
+      name: "netease-adblock"
+      type: response
+      require-body: true
+      timeout: 60
+
+
+# =========================================================
+# 墨鱼原始脚本
+# =========================================================
+
+script-providers:
+
+  "netease-adblock":
+    url: https://gist.githubusercontent.com/ddgksf2013/4f53b7c6083678df25fecc8ff68b52c4/raw/netease.adblock.js
+    interval: 86400
