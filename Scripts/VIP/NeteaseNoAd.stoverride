@@ -268,3 +268,4 @@ script-providers:
   "netease-adblock":
     url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/refs/heads/release/Scripts/VIP/netease.adblock.js
     interval: 86400
+    path: ./scripts/netease-adblock-stash.js
