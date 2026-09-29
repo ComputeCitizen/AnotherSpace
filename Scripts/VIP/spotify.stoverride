@@ -1,43 +1,162 @@
-name: SpotifyTest
-desc: 由 Surge/Loon/QX 风格转换为 Stash YAML；包含 header-rewrite、MITM、3 条脚本规则
+name: Spotify Premium [Stash]
+
+desc: |-
+  Spotify Premium 解锁 / 去广告
+  Stash 专用适配版
+  登录 Spotify 后启用，强制关闭并重新打开 App。
+
+author: app2smile / Amlabort / BOBO / Stash adapted
+
+icon: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/Icons/AppIcons/Image/App/Spotify.png
+
+category: 🐹 BOBO Premium
+
+date: 2026-09-29
+
+
+# =========================
+# Rules
+# =========================
+
+rules:
+  # 屏蔽 Spotify 遥测
+  - DOMAIN,aet.spotify.com,REJECT
+
+  # Spotify 禁用 QUIC
+  - SCRIPT,spotify-quic,REJECT,no-track
+
+
+# =========================
+# Stash Rule Shortcut
+# =========================
+
+script:
+  shortcuts:
+    spotify-quic: network == 'udp' and dst_port == 443 and (host == 'spotify.com' or host.endswith('.spotify.com'))
+
+
+# =========================
+# HTTP
+# =========================
 
 http:
-  mitm:
-    - 'spclient.wg.spotify.com'
-    - '*spclient.spotify.com'
 
-  header-rewrite:
-    - ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$ request-del if-none-match
+  # -------------------------
+  # MITM
+  # -------------------------
+
+  mitm:
+    - spclient.wg.spotify.com
+    - '*.spotify.com'
+
+
+  # -------------------------
+  # URL Rewrite
+  # -------------------------
+
+  url-rewrite:
+
+    # Spotify Premium
+    - '^https:\/\/(spclient\.wg|.*-spclient)\.spotify\.com(:443)?\/pendragon - reject-200'
+
+    # 屏蔽设置界面会员信息
+    - '^https:\/\/.*-spclient\.spotify\.com(:443)?\/pam-view-service\/ - reject-200'
+
+    # 屏蔽 AI DJ
+    - '^https:\/\/.*37i9dQZF1EYkqdzj48dyYq.* - reject-200'
+
+
+  # -------------------------
+  # Script
+  # -------------------------
 
   script:
-    - match: ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/
-      name: spotify_json
-      type: request
-      timeout: 10
 
-    - match: ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/device-capabilities\/v1\/capabilities
-      name: spotify_json2
-      type: response
-      require-body: true
-      timeout: 10
-
-    - match: ^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$
-      name: spotify_proto
+    # 搜索页去广告
+    - match: '^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/browsita\/v.\/browse'
+      name: spotify-no-search-ad
       type: response
       require-body: true
       binary-mode: true
-      max-size: 0
+      timeout: 10
+      max-size: 10485760
+
+
+    # 首页去广告
+    - match: '^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/casita\/v.\/home\/default'
+      name: spotify-no-home-ad
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 10
+      max-size: 10485760
+
+
+    # Scroll 去广告
+    - match: '^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/scrollsita\/v.\/scroll\/spotify'
+      name: spotify-no-scroll-ad
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 10
+      max-size: 10485760
+
+
+    # 删除 If-None-Match
+    - match: '^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/user-customization-service\/v1\/customize$'
+      name: spotify-header
+      type: request
       timeout: 10
 
+
+    # Premium / Bootstrap / Customize
+    - match: '^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$'
+      name: spotify-premium
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 30
+      max-size: 10485760
+
+
+    # Gabo
+    - match: '^https:\/\/(.*-spclient\.spotify\.com(:443)?|spclient\.wg\.spotify\.com)\/gabo-receiver-service'
+      name: spotify-gabo
+      type: request
+      timeout: 10
+
+
+# =========================
+# Script Providers
+# =========================
+
 script-providers:
-  spotify_json:
-    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-json.js
+
+  spotify-no-search-ad:
+    url: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/JS/Spotify/JS/JS-3/JS/Spotify-NoSearchAd.js
     interval: 86400
 
-  spotify_json2:
-    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-json2.js
+
+  spotify-no-home-ad:
+    url: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/JS/Spotify/JS/JS-3/JS/Spotify-NoHomeAd.js
     interval: 86400
 
-  spotify_proto:
-    url: https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-proto-test.js
-    interval: 0
+
+  spotify-no-scroll-ad:
+    url: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/JS/Spotify/JS/JS-3/JS/Spotify-NoScrollAd.js
+    interval: 86400
+
+
+  spotify-header:
+    url: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/JS/Spotify/JS/JS-1/Spotify-QX-Header.js
+    interval: 86400
+
+
+  spotify-premium:
+    url: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/JS/Spotify/JS/JS-3/JS/Spotify-Proto-Eevee3.js
+    interval: 86400
+
+
+  spotify-gabo:
+    url: https://raw.githubusercontent.com/BOBOLAOSHIV587/Rules/main/JS/Spotify/JS/JS-3/JS/Spotify-GaBo.js
+    interval: 86400
