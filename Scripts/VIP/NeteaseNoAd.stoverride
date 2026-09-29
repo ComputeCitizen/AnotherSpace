@@ -1,8 +1,7 @@
 name: |-
-  网易云音乐净化[墨鱼版-Stash 完整版]
+  网易云音乐净化 v0.1.2
 desc: |-
-  基于 ddgksf2013/Rewrite 的网易云净化逻辑，改为 Stash WebKit + binary-mode 自包含版本。
-  不再依赖远程 JS 下载，首次加载时由 payload 写入本地脚本缓存。
+  基于 ddgksf2013/Rewrite 的网易云净化逻辑，改为 Stash WebKit + binary-mode。
 author: |-
   ddgksf2013 / Stash Adaptation
 version: |-
