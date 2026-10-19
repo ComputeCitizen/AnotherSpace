@@ -71,3 +71,18 @@ payload:
   - '+.xgplay9.com'
   - '+.ymuuy.com'
   - '+.yuglf.com'
+
+  # Feifan homepages and mirrors
+  - '+.ffzy.tv'
+  - '+.ffzy1.tv'
+  - '+.ffzy2.tv'
+  - '+.ffzy3.tv'
+
+  # Feifan parser and current playback/image domains
+  - '+.ffzyplay.com'
+  - '+.feifei-play.com'
+  - '+.fffgood.com'
+
+  # Feifan legacy domains retained for compatibility
+  - '+.feifei-video.com'
+  - '+.feifeiimg.vip'
