@@ -1,6 +1,5 @@
 payload:
   # General
-  - '+.xxxxx.com'
 
   # Rex VOD API domains (1.2.18)
   - '+.dyttzyapi.com'
