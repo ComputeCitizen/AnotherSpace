@@ -1,11 +1,11 @@
 name: |-
-  网易云音乐净化 v0.1.5 [XEAPI 兼容]
+  网易云音乐净化 v0.1.6（稳定回退）
 desc: |-
   基于 ddgksf2013/Rewrite 的网易云净化逻辑，改为 Stash WebKit + binary-mode。
 author: |-
   ddgksf2013 / Stash Adaptation
 version: |-
-  1.0.35-stash-xeapi
+  1.0.36-stash-stable
 lastModified: |-
   2026-11-18
 homepage: |-
@@ -20,23 +20,23 @@ http:
 
   url-rewrite:
     - >-
-      ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/content\/activity\/music\/jar\/template\/list - reject-200
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/content\/activity\/music\/jar\/template\/list - reject-200
     - >-
-      ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/sp\/flow\/popup\/query - reject-200
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/sp\/flow\/popup\/query - reject-200
     - >-
-      ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/vipmall\/couponcfg\/get - reject-200
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vipmall\/couponcfg\/get - reject-200
     - >-
-      ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:weapi|eapi|xeapi)\/(resource-exposure\/)?activity - reject-200
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/w?eapi\/(resource-exposure\/)?activity - reject-200
     - >-
-      ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/comment\/feed\/inserted\/resources - reject-200
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/comment\/feed\/inserted\/resources - reject-200
     - >-
-      ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/resource-exposure\/config - reject-200
+      ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/resource-exposure\/config - reject-200
 
   script:
 
     # 底部Tab
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/link\/home\/framework\/tab
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/home\/framework\/tab
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -45,8 +45,8 @@ http:
       max-size: 5242880
 
     # 发现页
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/link\/page\/discovery\/resource\/show
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/page\/discovery\/resource\/show
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -55,8 +55,8 @@ http:
       max-size: 5242880
 
     # 首推荐页
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/link\/page\/rcmd\/resource\/show
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/page\/rcmd\/resource\/show
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -65,8 +65,8 @@ http:
       max-size: 5242880
 
     # 软件更新
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/ios\/upgrade\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ios\/upgrade\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -75,8 +75,8 @@ http:
       max-size: 5242880
 
     # 搜索默认填词
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/search\/default\/keyword\/list
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/default\/keyword\/list
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -85,8 +85,8 @@ http:
       max-size: 5242880
 
     # 猜你喜欢
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/search\/rcmd\/keyword\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/rcmd\/keyword\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -95,8 +95,8 @@ http:
       max-size: 5242880
 
     # 搜索下方Chart
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/search\/chart\/list
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/chart\/list
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -105,8 +105,8 @@ http:
       max-size: 5242880
 
     # 搜索Chart
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/search\/chart\/detail
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/chart\/detail
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -115,8 +115,8 @@ http:
       max-size: 5242880
 
     # 相关搜索
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/search\/suggest\/keyword\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/suggest\/keyword\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -125,8 +125,8 @@ http:
       max-size: 5242880
 
     # 特殊词
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/search\/specialkeyword\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/specialkeyword\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -135,8 +135,8 @@ http:
       max-size: 5242880
 
     # 广告加载
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/ad\/loading\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/loading\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -145,8 +145,8 @@ http:
       max-size: 5242880
 
     # 广告实时
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/ad\/loading\/current
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/loading\/current
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -155,8 +155,8 @@ http:
       max-size: 5242880
 
     # 广告Get
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/ad\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -165,8 +165,8 @@ http:
       max-size: 5242880
 
     # 插入广告
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/link\/position\/show\/resource
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/position\/show\/resource
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -175,8 +175,8 @@ http:
       max-size: 5242880
 
     # 歌单顶部广告
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/link\/scene\/show\/resource
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/scene\/show\/resource
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -185,8 +185,8 @@ http:
       max-size: 5242880
 
     # 弹窗免费听歌
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/vip\/cashier\/tspopup\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vip\/cashier\/tspopup\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -195,8 +195,8 @@ http:
       max-size: 5242880
 
     # 侧栏账户
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/vipnewcenter\/app\/resource\/newaccountpage
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vipnewcenter\/app\/resource\/newaccountpage
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -205,8 +205,8 @@ http:
       max-size: 5242880
 
     # 侧栏推广
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/side-bar\/mini-program\/music-service\/account
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/side-bar\/mini-program\/music-service\/account
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -215,8 +215,8 @@ http:
       max-size: 5242880
 
     # 侧边VIP推广
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/delivery\/deliver
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/delivery\/deliver
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -225,8 +225,8 @@ http:
       max-size: 5242880
 
     # 侧边浮层
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/delivery\/batch-deliver
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/delivery\/batch-deliver
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -235,8 +235,8 @@ http:
       max-size: 5242880
 
     # 侧边兑换黑胶Tips
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/yunbei\/account\/entrance\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/yunbei\/account\/entrance\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -245,8 +245,8 @@ http:
       max-size: 5242880
 
     # 侧边创作福利
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/creator\/musician\/reminder\/message\/get
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/creator\/musician\/reminder\/message\/get
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -255,19 +255,8 @@ http:
       max-size: 5242880
 
     # 评论区插入推广 / Batch
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi|api)\/batch
-      name: "netease-adblock-xeapi-v1"
-      type: response
-      require-body: true
-      binary-mode: true
-      engine: webkit
-      timeout: 60
-      max-size: 5242880
-
-
-    # XEAPI / EAPI 歌曲信息兼容；保留服务器返回的试听限制
-    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/(?:xeapi|eapi)\/(?:song\/enhance\/(?:player\/url(?:\/v1)?|privilege)|song\/privilege\/music\/url\/info\/query|v3\/song\/detail)(?:[/?]|$)
-      name: "netease-adblock-xeapi-v1"
+    - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/batch
+      name: "netease-adblock-stable-v2"
       type: response
       require-body: true
       binary-mode: true
@@ -276,7 +265,7 @@ http:
       max-size: 5242880
 
 script-providers:
-  "netease-adblock-xeapi-v1":
-    url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/release/Scripts/VIP/netease-adblock-xeapi-v1.js
+  "netease-adblock-stable-v2":
+    url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/refs/heads/release/Scripts/VIP/netease.adblock.js
     interval: 86400
-    path: ./scripts/netease-adblock-xeapi-v1.js
+    path: ./scripts/netease-adblock-stable-v2.js
