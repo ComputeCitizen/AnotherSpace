@@ -1,11 +1,11 @@
 name: |-
-  网易云音乐净化 v0.1.6（稳定回退）
+  网易云音乐净化 v0.1.7（播放只读诊断）
 desc: |-
-  基于 ddgksf2013/Rewrite 的网易云净化逻辑，改为 Stash WebKit + binary-mode。
+  保留 ddgksf2013 去广告功能；额外记录播放接口时间、版本、授权和试听摘要，绝不改写播放响应。
 author: |-
   ddgksf2013 / Stash Adaptation
 version: |-
-  1.0.36-stash-stable
+  1.0.37-stash-diagnostic
 lastModified: |-
   2026-11-18
 homepage: |-
@@ -17,6 +17,7 @@ http:
     - "interface1.music.163.com"
     - "interface2.music.163.com"
     - "interface3.music.163.com"
+    - "music.163.com"
 
   url-rewrite:
     - >-
@@ -264,8 +265,23 @@ http:
       timeout: 60
       max-size: 5242880
 
+
+    # 播放链路只读诊断：AES / gzip 解码，输出精简结果；不修改返回体
+    - match: ^https?:\/\/(?:interface\d*\.music\.163\.com|music\.163\.com)\/(?:xeapi|eapi|api)\/(?:song\/enhance\/(?:player\/url(?:\/v1)?|privilege)|song\/privilege\/music\/url\/info\/query|v3\/song\/detail|vipauth\/app\/auth\/(?:query|soundquality\/query)|music-vip-membership\/client\/vip\/info|privilege\/song\/free\/trail\/query|vipmall\/interest\/trialsong\/listen)(?:[/?]|$)
+      name: "netease-playback-diagnostic-v1"
+      type: response
+      require-body: true
+      binary-mode: true
+      engine: webkit
+      timeout: 60
+      max-size: 5242880
+
 script-providers:
   "netease-adblock-stable-v2":
     url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/refs/heads/release/Scripts/VIP/netease.adblock.js
     interval: 86400
     path: ./scripts/netease-adblock-stable-v2.js
+  "netease-playback-diagnostic-v1":
+    url: https://raw.githubusercontent.com/ComputeCitizen/AnotherSpace/release/Scripts/VIP/netease-playback-diagnostic-v1.js
+    interval: 86400
+    path: ./scripts/netease-playback-diagnostic-v1.js
